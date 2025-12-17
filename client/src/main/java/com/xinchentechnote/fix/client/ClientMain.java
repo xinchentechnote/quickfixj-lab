@@ -18,5 +18,10 @@ public class ClientMain {
 
         initiator.start();
         System.out.println("FIX Client started...");
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            initiator.stop();
+        }));
+
+        Thread.currentThread().join();
     }
 }
