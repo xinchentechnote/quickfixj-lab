@@ -30,15 +30,63 @@
         </dependency>
     </dependencies>
 
-    <build>
+<build>
   <plugins>
+   <plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>appassembler-maven-plugin</artifactId>
+    <version>2.1.0</version>
+    <executions>
+        <execution>
+            <id>make-app</id>
+            <phase>package</phase>
+            <goals>
+                <goal>assemble</goal>
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+        <assembleDirectory>${project.build.directory}/dist</assembleDirectory>
+        <unixScriptTemplate>
+          server/assembly/bin/bootstrap.sh.tpl
+        </unixScriptTemplate>
+        <windowsScriptTemplate>
+          server/assembly/bin/bootstrap.bat.tpl
+        </windowsScriptTemplate>
+        <includeProjectArtifact>true</includeProjectArtifact>
+        <repositoryLayout>flat</repositoryLayout>
+        <repositoryName>lib</repositoryName>
+        <configurationDirectory>conf</configurationDirectory>
+        <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
+        <programs>
+            <program>
+                <name>bootstrap</name>
+                <mainClass>com.xinchentechnote.fix.server.ServerMain</mainClass>
+            </program>
+        </programs>
+    </configuration>
+
+    
+</plugin>
+
     <plugin>
-      <groupId>org.codehaus.mojo</groupId>
-      <artifactId>exec-maven-plugin</artifactId>
-      <version>3.6.2</version>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-assembly-plugin</artifactId>
+      <version>3.6.0</version>
       <configuration>
-        <mainClass>com.xinchentechnote.fix.server.ServerMain</mainClass>
+        <descriptors>
+          <descriptor>assembly/assembly.xml</descriptor>
+        </descriptors>
       </configuration>
+      <executions>
+        <execution>
+          <id>make-dist</id>
+          <phase>package</phase>
+          <goals>
+            <goal>single</goal>
+          </goals>
+        </execution>
+      </executions>
     </plugin>
   </plugins>
 </build>

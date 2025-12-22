@@ -5,7 +5,7 @@ import quickfix.*;
 public class ServerMain {
 
     public static void main(String[] args) throws Exception {
-        SessionSettings settings = new SessionSettings("server/server.cfg");
+        SessionSettings settings = new SessionSettings("./conf/server.cfg");
 
         Application app = new ServerApp();
         MessageStoreFactory storeFactory = new MemoryStoreFactory();
