@@ -1,1 +1,1 @@
-mvn -pl client exec:java
+./client/target/dist/bin/bootstrap start

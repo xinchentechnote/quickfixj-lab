@@ -5,7 +5,7 @@ import quickfix.*;
 public class ClientMain {
 
     public static void main(String[] args) throws Exception {
-        SessionSettings settings = new SessionSettings("client/client.cfg");
+        SessionSettings settings = new SessionSettings("./conf/client.cfg");
 
         Application app = new ClientApp();
         MessageStoreFactory storeFactory = new MemoryStoreFactory();

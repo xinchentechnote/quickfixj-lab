@@ -1,95 +1,58 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.xinchentechnote.fix</groupId>
-        <artifactId>quickfixj-lab</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </parent>
+  <parent>
+    <groupId>com.xinchentechnote.fix</groupId>
+    <artifactId>quickfixj-lab</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
 
-    <artifactId>server</artifactId>
+  <artifactId>server</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.quickfixj</groupId>
-            <artifactId>quickfixj-core</artifactId>
-        </dependency>
+  <dependencies>
+    <dependency>
+      <groupId>org.quickfixj</groupId>
+      <artifactId>quickfixj-core</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>org.quickfixj</groupId>
-            <artifactId>quickfixj-messages-fix44</artifactId>
-        </dependency>
+    <dependency>
+      <groupId>org.quickfixj</groupId>
+      <artifactId>quickfixj-messages-fix44</artifactId>
+    </dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-simple</artifactId>
-        </dependency>
-    </dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+    </dependency>
+  </dependencies>
 
-<build>
-  <plugins>
-   <plugin>
-    <groupId>org.codehaus.mojo</groupId>
-    <artifactId>appassembler-maven-plugin</artifactId>
-    <version>2.1.0</version>
-    <executions>
-        <execution>
-            <id>make-app</id>
-            <phase>package</phase>
-            <goals>
-                <goal>assemble</goal>
-            </goals>
-        </execution>
-    </executions>
-    <configuration>
-        <assembleDirectory>${project.build.directory}/dist</assembleDirectory>
-        <unixScriptTemplate>
-          server/assembly/bin/bootstrap.sh.tpl
-        </unixScriptTemplate>
-        <windowsScriptTemplate>
-          server/assembly/bin/bootstrap.bat.tpl
-        </windowsScriptTemplate>
-        <includeProjectArtifact>true</includeProjectArtifact>
-        <repositoryLayout>flat</repositoryLayout>
-        <repositoryName>lib</repositoryName>
-        <configurationDirectory>conf</configurationDirectory>
-        <includeConfigurationDirectoryInClasspath>true</includeConfigurationDirectoryInClasspath>
-        <programs>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>appassembler-maven-plugin</artifactId>
+        <configuration>
+          <programs>
             <program>
-                <name>bootstrap</name>
-                <mainClass>com.xinchentechnote.fix.server.ServerMain</mainClass>
+              <!-- <name>bootstrap</name> -->
+              <mainClass>com.xinchentechnote.fix.server.ServerMain</mainClass>
             </program>
-        </programs>
-    </configuration>
-
-    
-</plugin>
-
-    <plugin>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-assembly-plugin</artifactId>
-      <version>3.6.0</version>
-      <configuration>
-        <descriptors>
-          <descriptor>assembly/assembly.xml</descriptor>
-        </descriptors>
-      </configuration>
-      <executions>
-        <execution>
-          <id>make-dist</id>
-          <phase>package</phase>
-          <goals>
-            <goal>single</goal>
-          </goals>
-        </execution>
-      </executions>
-    </plugin>
-  </plugins>
-</build>
+          </programs>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
 
 
 </project>
