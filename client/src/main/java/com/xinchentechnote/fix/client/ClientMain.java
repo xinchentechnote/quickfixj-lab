@@ -4,24 +4,26 @@ import quickfix.*;
 
 public class ClientMain {
 
-    public static void main(String[] args) throws Exception {
-        SessionSettings settings = new SessionSettings("./conf/client.cfg");
+  public static void main(String[] args) throws Exception {
+    SessionSettings settings = new SessionSettings("./conf/client.cfg");
 
-        Application app = new ClientApp();
-        MessageStoreFactory storeFactory = new MemoryStoreFactory();
-        LogFactory logFactory = new ScreenLogFactory(true, true, true);
-        MessageFactory messageFactory = new DefaultMessageFactory();
+    Application app = new ClientApp();
+    MessageStoreFactory storeFactory = new MemoryStoreFactory();
+    LogFactory logFactory = new ScreenLogFactory(true, true, true);
+    MessageFactory messageFactory = new DefaultMessageFactory();
 
-        SocketInitiator initiator = new SocketInitiator(
-                app, storeFactory, settings, logFactory, messageFactory
-        );
+    SocketInitiator initiator =
+        new SocketInitiator(app, storeFactory, settings, logFactory, messageFactory);
 
-        initiator.start();
-        System.out.println("FIX Client started...");
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            initiator.stop();
-        }));
+    initiator.start();
+    System.out.println("FIX Client started...");
+    Runtime.getRuntime()
+        .addShutdownHook(
+            new Thread(
+                () -> {
+                  initiator.stop();
+                }));
 
-        Thread.currentThread().join();
-    }
+    Thread.currentThread().join();
+  }
 }
