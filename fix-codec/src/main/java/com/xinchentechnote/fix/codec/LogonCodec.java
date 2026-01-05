@@ -2,6 +2,7 @@ package com.xinchentechnote.fix.codec;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import quickfix.field.*;
 import quickfix.fix44.*;
@@ -103,6 +104,18 @@ public class LogonCodec implements FixJsonCodec<Logon> {
     }
     if (logon.isSetField(Password.FIELD)) {
       root.put("Password", logon.getString(Password.FIELD));
+    }
+    if (logon.isSetField(NoMsgTypes.FIELD)) {
+      Logon.NoMsgTypes group = new Logon.NoMsgTypes();
+      ArrayNode noMsgTypesNode = MAPPER.createArrayNode();
+      for (int i = 1; i <= logon.getGroupCount(NoMsgTypes.FIELD); i++) {
+        logon.getGroup(i, group);
+        ObjectNode groupNode = MAPPER.createObjectNode();
+        groupNode.put("RefMsgType", group.getString(MsgType.FIELD));
+        groupNode.put("MsgDirection", String.valueOf(group.getChar(MsgDirection.FIELD)));
+        noMsgTypesNode.add(groupNode);
+      }
+      root.set("NoMsgTypes", noMsgTypesNode);
     }
     if (logon.getTrailer().isSetField(SignatureLength.FIELD)) {
       root.put("SignatureLength", logon.getTrailer().getInt(SignatureLength.FIELD));
@@ -213,6 +226,19 @@ public class LogonCodec implements FixJsonCodec<Logon> {
     }
     if (root.has("Password")) {
       logon.setField(new Password(root.get("Password").asText()));
+    }
+    if (root.has("NoMsgTypes")) {
+      JsonNode noMsgTypesNode = root.get("NoMsgTypes");
+      for (JsonNode noMsgTypeNode : noMsgTypesNode) {
+        Logon.NoMsgTypes group = new Logon.NoMsgTypes();
+        if (noMsgTypeNode.has("RefMsgType")) {
+          group.setField(new MsgType(noMsgTypeNode.get("RefMsgType").asText()));
+        }
+        if (noMsgTypeNode.has("MsgDirection")) {
+          group.setField(new MsgDirection(noMsgTypeNode.get("MsgDirection").asText().charAt(0)));
+        }
+        logon.addGroup(group);
+      }
     }
     if (root.has("SignatureLength")) {
       logon.getTrailer().setField(new SignatureLength(root.get("SignatureLength").asInt()));

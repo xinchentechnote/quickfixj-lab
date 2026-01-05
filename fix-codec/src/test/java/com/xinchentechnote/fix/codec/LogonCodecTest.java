@@ -10,9 +10,19 @@ import quickfix.fix44.Logon;
 public class LogonCodecTest {
 
   @Test
-  public void testDecodeAndEncode() throws Exception {
+  public void testDecodeAndEncode1() throws Exception {
 
     String json = FileUtils.readFileToString("json/Logon.simple.json");
+    LogonCodec codec = new LogonCodec();
+    Logon decode = codec.decode(json);
+    String encode = codec.encode(decode);
+    assertEquals(json, encode);
+  }
+
+  @Test
+  public void testDecodeAndEncode2() throws Exception {
+
+    String json = FileUtils.readFileToString("json/Logon.json");
     LogonCodec codec = new LogonCodec();
     Logon decode = codec.decode(json);
     String encode = codec.encode(decode);
