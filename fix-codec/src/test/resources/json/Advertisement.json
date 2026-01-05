@@ -1,0 +1,46 @@
+{
+  "BeginString" : "FIX.4.4",
+  "BodyLength" : 142,
+  "MsgType" : "A",
+  "SenderCompID" : "CLIENT",
+  "TargetCompID" : "SERVER",
+  "MsgSeqNum" : 1,
+  "SendingTime" : "2025-12-31T16:03:33",
+  "AdvId" : "ADV-20251217-0001",
+  "AdvTransType" : "N",
+  "AdvRefID" : "REF-0001",
+  "Instrument" : {
+    "Symbol" : "AAPL",
+    "SecurityID" : "037833100",
+    "SecurityIDSource" : "1",
+    "Product" : 4
+  },
+  "NoLegs" : [ {
+    "InstrumentLeg" : {
+      "LegSymbol" : "AAPL",
+      "LegSecurityID" : "037833100",
+      "LegSecurityIDSource" : "1",
+      "LegRatioQty" : 1
+    }
+  } ],
+  "NoUnderlyings" : [ {
+    "UnderlyingInstrument" : {
+      "UnderlyingSymbol" : "AAPL",
+      "UnderlyingSecurityID" : "037833100",
+      "UnderlyingSecurityIDSource" : "1"
+    }
+  } ],
+  "AdvSide" : "B",
+  "Quantity" : 1000,
+  "QtyType" : 0,
+  "Price" : 189.5,
+  "Currency" : "USD",
+  "TradeDate" : "20251217",
+  "TransactTime" : "2025-12-31T16:03:33",
+  "Text" : "Advertisement test message",
+  "URLLink" : "https://example.com/adv/ADV-20251217-0001",
+  "LastMkt" : "XNAS",
+  "TradingSessionID" : "1",
+  "TradingSessionSubID" : "2",
+  "CheckSum" : "123"
+}
