@@ -12,24 +12,8 @@
   "Instrument" : {
     "Symbol" : "AAPL",
     "SecurityID" : "037833100",
-    "SecurityIDSource" : "1",
-    "Product" : 4
+    "SecurityIDSource" : "1"
   },
-  "NoLegs" : [ {
-    "InstrumentLeg" : {
-      "LegSymbol" : "AAPL",
-      "LegSecurityID" : "037833100",
-      "LegSecurityIDSource" : "1",
-      "LegRatioQty" : 1
-    }
-  } ],
-  "NoUnderlyings" : [ {
-    "UnderlyingInstrument" : {
-      "UnderlyingSymbol" : "AAPL",
-      "UnderlyingSecurityID" : "037833100",
-      "UnderlyingSecurityIDSource" : "1"
-    }
-  } ],
   "AdvSide" : "B",
   "Quantity" : 1000,
   "QtyType" : 0,
