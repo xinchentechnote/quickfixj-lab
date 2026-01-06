@@ -13,240 +13,255 @@ public class LogonCodec implements FixJsonCodec<Logon> {
 
   @Override
   public String encode(Logon logon) throws Exception {
-    ObjectNode root = MAPPER.createObjectNode();
-    root.put("BeginString", logon.getHeader().getString(BeginString.FIELD));
-    root.put("BodyLength", logon.getHeader().getInt(BodyLength.FIELD));
-    root.put("MsgType", logon.getHeader().getString(MsgType.FIELD));
-    root.put("SenderCompID", logon.getHeader().getString(SenderCompID.FIELD));
-    root.put("TargetCompID", logon.getHeader().getString(TargetCompID.FIELD));
+    ObjectNode logonNode = MAPPER.createObjectNode();
+    logonNode.put("BeginString", logon.getHeader().getString(BeginString.FIELD));
+    logonNode.put("BodyLength", logon.getHeader().getInt(BodyLength.FIELD));
+    logonNode.put("MsgType", logon.getHeader().getString(MsgType.FIELD));
+    logonNode.put("SenderCompID", logon.getHeader().getString(SenderCompID.FIELD));
+    logonNode.put("TargetCompID", logon.getHeader().getString(TargetCompID.FIELD));
     if (logon.getHeader().isSetField(OnBehalfOfCompID.FIELD)) {
-      root.put("OnBehalfOfCompID", logon.getHeader().getString(OnBehalfOfCompID.FIELD));
+      logonNode.put("OnBehalfOfCompID", logon.getHeader().getString(OnBehalfOfCompID.FIELD));
     }
     if (logon.getHeader().isSetField(DeliverToCompID.FIELD)) {
-      root.put("DeliverToCompID", logon.getHeader().getString(DeliverToCompID.FIELD));
+      logonNode.put("DeliverToCompID", logon.getHeader().getString(DeliverToCompID.FIELD));
     }
     if (logon.getHeader().isSetField(SecureDataLen.FIELD)) {
-      root.put("SecureDataLen", logon.getHeader().getInt(SecureDataLen.FIELD));
+      logonNode.put("SecureDataLen", logon.getHeader().getInt(SecureDataLen.FIELD));
     }
     if (logon.getHeader().isSetField(SecureData.FIELD)) {
-      root.put("SecureData", logon.getHeader().getString(SecureData.FIELD));
+      logonNode.put("SecureData", logon.getHeader().getString(SecureData.FIELD));
     }
-    root.put("MsgSeqNum", logon.getHeader().getInt(MsgSeqNum.FIELD));
+    logonNode.put("MsgSeqNum", logon.getHeader().getInt(MsgSeqNum.FIELD));
     if (logon.getHeader().isSetField(SenderSubID.FIELD)) {
-      root.put("SenderSubID", logon.getHeader().getString(SenderSubID.FIELD));
+      logonNode.put("SenderSubID", logon.getHeader().getString(SenderSubID.FIELD));
     }
     if (logon.getHeader().isSetField(SenderLocationID.FIELD)) {
-      root.put("SenderLocationID", logon.getHeader().getString(SenderLocationID.FIELD));
+      logonNode.put("SenderLocationID", logon.getHeader().getString(SenderLocationID.FIELD));
     }
     if (logon.getHeader().isSetField(TargetSubID.FIELD)) {
-      root.put("TargetSubID", logon.getHeader().getString(TargetSubID.FIELD));
+      logonNode.put("TargetSubID", logon.getHeader().getString(TargetSubID.FIELD));
     }
     if (logon.getHeader().isSetField(TargetLocationID.FIELD)) {
-      root.put("TargetLocationID", logon.getHeader().getString(TargetLocationID.FIELD));
+      logonNode.put("TargetLocationID", logon.getHeader().getString(TargetLocationID.FIELD));
     }
     if (logon.getHeader().isSetField(OnBehalfOfSubID.FIELD)) {
-      root.put("OnBehalfOfSubID", logon.getHeader().getString(OnBehalfOfSubID.FIELD));
+      logonNode.put("OnBehalfOfSubID", logon.getHeader().getString(OnBehalfOfSubID.FIELD));
     }
     if (logon.getHeader().isSetField(OnBehalfOfLocationID.FIELD)) {
-      root.put("OnBehalfOfLocationID", logon.getHeader().getString(OnBehalfOfLocationID.FIELD));
+      logonNode.put(
+          "OnBehalfOfLocationID", logon.getHeader().getString(OnBehalfOfLocationID.FIELD));
     }
     if (logon.getHeader().isSetField(DeliverToSubID.FIELD)) {
-      root.put("DeliverToSubID", logon.getHeader().getString(DeliverToSubID.FIELD));
+      logonNode.put("DeliverToSubID", logon.getHeader().getString(DeliverToSubID.FIELD));
     }
     if (logon.getHeader().isSetField(DeliverToLocationID.FIELD)) {
-      root.put("DeliverToLocationID", logon.getHeader().getString(DeliverToLocationID.FIELD));
+      logonNode.put("DeliverToLocationID", logon.getHeader().getString(DeliverToLocationID.FIELD));
     }
     if (logon.getHeader().isSetField(PossDupFlag.FIELD)) {
-      root.put("PossDupFlag", logon.getHeader().getBoolean(PossDupFlag.FIELD));
+      logonNode.put("PossDupFlag", logon.getHeader().getBoolean(PossDupFlag.FIELD));
     }
     if (logon.getHeader().isSetField(PossResend.FIELD)) {
-      root.put("PossResend", logon.getHeader().getBoolean(PossResend.FIELD));
+      logonNode.put("PossResend", logon.getHeader().getBoolean(PossResend.FIELD));
     }
-    root.put("SendingTime", logon.getHeader().getUtcTimeStamp(SendingTime.FIELD).toString());
+    logonNode.put("SendingTime", logon.getHeader().getUtcTimeStamp(SendingTime.FIELD).toString());
     if (logon.getHeader().isSetField(OrigSendingTime.FIELD)) {
-      root.put(
+      logonNode.put(
           "OrigSendingTime", logon.getHeader().getUtcTimeStamp(OrigSendingTime.FIELD).toString());
     }
     if (logon.getHeader().isSetField(XmlDataLen.FIELD)) {
-      root.put("XmlDataLen", logon.getHeader().getInt(XmlDataLen.FIELD));
+      logonNode.put("XmlDataLen", logon.getHeader().getInt(XmlDataLen.FIELD));
     }
     if (logon.getHeader().isSetField(XmlData.FIELD)) {
-      root.put("XmlData", logon.getHeader().getString(XmlData.FIELD));
+      logonNode.put("XmlData", logon.getHeader().getString(XmlData.FIELD));
     }
     if (logon.getHeader().isSetField(MessageEncoding.FIELD)) {
-      root.put("MessageEncoding", logon.getHeader().getString(MessageEncoding.FIELD));
+      logonNode.put("MessageEncoding", logon.getHeader().getString(MessageEncoding.FIELD));
     }
     if (logon.getHeader().isSetField(LastMsgSeqNumProcessed.FIELD)) {
-      root.put("LastMsgSeqNumProcessed", logon.getHeader().getInt(LastMsgSeqNumProcessed.FIELD));
+      logonNode.put(
+          "LastMsgSeqNumProcessed", logon.getHeader().getInt(LastMsgSeqNumProcessed.FIELD));
     }
-    root.put("EncryptMethod", logon.getInt(EncryptMethod.FIELD));
-    root.put("HeartBtInt", logon.getInt(HeartBtInt.FIELD));
+    logonNode.put("EncryptMethod", logon.getInt(EncryptMethod.FIELD));
+    logonNode.put("HeartBtInt", logon.getInt(HeartBtInt.FIELD));
     if (logon.isSetField(RawDataLength.FIELD)) {
-      root.put("RawDataLength", logon.getInt(RawDataLength.FIELD));
+      logonNode.put("RawDataLength", logon.getInt(RawDataLength.FIELD));
     }
     if (logon.isSetField(RawData.FIELD)) {
-      root.put("RawData", logon.getString(RawData.FIELD));
+      logonNode.put("RawData", logon.getString(RawData.FIELD));
     }
     if (logon.isSetField(ResetSeqNumFlag.FIELD)) {
-      root.put("ResetSeqNumFlag", logon.getBoolean(ResetSeqNumFlag.FIELD));
+      logonNode.put("ResetSeqNumFlag", logon.getBoolean(ResetSeqNumFlag.FIELD));
     }
     if (logon.isSetField(NextExpectedMsgSeqNum.FIELD)) {
-      root.put("NextExpectedMsgSeqNum", logon.getInt(NextExpectedMsgSeqNum.FIELD));
+      logonNode.put("NextExpectedMsgSeqNum", logon.getInt(NextExpectedMsgSeqNum.FIELD));
     }
     if (logon.isSetField(MaxMessageSize.FIELD)) {
-      root.put("MaxMessageSize", logon.getInt(MaxMessageSize.FIELD));
+      logonNode.put("MaxMessageSize", logon.getInt(MaxMessageSize.FIELD));
     }
     if (logon.isSetField(TestMessageIndicator.FIELD)) {
-      root.put("TestMessageIndicator", logon.getBoolean(TestMessageIndicator.FIELD));
+      logonNode.put("TestMessageIndicator", logon.getBoolean(TestMessageIndicator.FIELD));
     }
     if (logon.isSetField(Username.FIELD)) {
-      root.put("Username", logon.getString(Username.FIELD));
+      logonNode.put("Username", logon.getString(Username.FIELD));
     }
     if (logon.isSetField(Password.FIELD)) {
-      root.put("Password", logon.getString(Password.FIELD));
+      logonNode.put("Password", logon.getString(Password.FIELD));
     }
     if (logon.isSetField(NoMsgTypes.FIELD)) {
-      Logon.NoMsgTypes group = new Logon.NoMsgTypes();
-      ArrayNode noMsgTypesNode = MAPPER.createArrayNode();
+      Logon.NoMsgTypes logonNoMsgTypesGroup = new Logon.NoMsgTypes();
+      ArrayNode logonNoMsgTypesNode = MAPPER.createArrayNode();
       for (int i = 1; i <= logon.getGroupCount(NoMsgTypes.FIELD); i++) {
-        logon.getGroup(i, group);
-        ObjectNode groupNode = MAPPER.createObjectNode();
-        groupNode.put("RefMsgType", group.getString(MsgType.FIELD));
-        groupNode.put("MsgDirection", String.valueOf(group.getChar(MsgDirection.FIELD)));
-        noMsgTypesNode.add(groupNode);
+        logon.getGroup(i, logonNoMsgTypesGroup);
+        ObjectNode logonNoMsgTypesGroupNode = MAPPER.createObjectNode();
+        if (logonNoMsgTypesGroup.isSetField(RefMsgType.FIELD)) {
+          logonNoMsgTypesGroupNode.put(
+              "RefMsgType", logonNoMsgTypesGroup.getString(RefMsgType.FIELD));
+        }
+        if (logonNoMsgTypesGroup.isSetField(MsgDirection.FIELD)) {
+          logonNoMsgTypesGroupNode.put(
+              "MsgDirection", logonNoMsgTypesGroup.getString(MsgDirection.FIELD));
+        }
+        logonNoMsgTypesNode.add(logonNoMsgTypesGroupNode);
       }
-      root.set("NoMsgTypes", noMsgTypesNode);
+      logonNode.put("NoMsgTypes", logonNoMsgTypesNode);
     }
     if (logon.getTrailer().isSetField(SignatureLength.FIELD)) {
-      root.put("SignatureLength", logon.getTrailer().getInt(SignatureLength.FIELD));
+      logonNode.put("SignatureLength", logon.getTrailer().getInt(SignatureLength.FIELD));
     }
     if (logon.getTrailer().isSetField(Signature.FIELD)) {
-      root.put("Signature", logon.getTrailer().getString(Signature.FIELD));
+      logonNode.put("Signature", logon.getTrailer().getString(Signature.FIELD));
     }
-    root.put("CheckSum", logon.getTrailer().getString(CheckSum.FIELD));
-    return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(root);
+    logonNode.put("CheckSum", logon.getTrailer().getString(CheckSum.FIELD));
+    return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(logonNode);
   }
 
   @Override
   public Logon decode(String jsonString) throws Exception {
-    JsonNode root = MAPPER.readTree(jsonString);
+    JsonNode logonNode = MAPPER.readTree(jsonString);
     Logon logon = new Logon();
-    logon.getHeader().setField(new BeginString(root.get("BeginString").asText()));
-    logon.getHeader().setField(new BodyLength(root.get("BodyLength").asInt()));
-    logon.getHeader().setField(new MsgType(root.get("MsgType").asText()));
-    logon.getHeader().setField(new SenderCompID(root.get("SenderCompID").asText()));
-    logon.getHeader().setField(new TargetCompID(root.get("TargetCompID").asText()));
-    if (root.has("OnBehalfOfCompID")) {
-      logon.getHeader().setField(new OnBehalfOfCompID(root.get("OnBehalfOfCompID").asText()));
+    logon.getHeader().setField(new BeginString(logonNode.get("BeginString").asText()));
+    logon.getHeader().setField(new BodyLength(logonNode.get("BodyLength").asInt()));
+    logon.getHeader().setField(new MsgType(logonNode.get("MsgType").asText()));
+    logon.getHeader().setField(new SenderCompID(logonNode.get("SenderCompID").asText()));
+    logon.getHeader().setField(new TargetCompID(logonNode.get("TargetCompID").asText()));
+    if (logonNode.has("OnBehalfOfCompID")) {
+      logon.getHeader().setField(new OnBehalfOfCompID(logonNode.get("OnBehalfOfCompID").asText()));
     }
-    if (root.has("DeliverToCompID")) {
-      logon.getHeader().setField(new DeliverToCompID(root.get("DeliverToCompID").asText()));
+    if (logonNode.has("DeliverToCompID")) {
+      logon.getHeader().setField(new DeliverToCompID(logonNode.get("DeliverToCompID").asText()));
     }
-    if (root.has("SecureDataLen")) {
-      logon.getHeader().setField(new SecureDataLen(root.get("SecureDataLen").asInt()));
+    if (logonNode.has("SecureDataLen")) {
+      logon.getHeader().setField(new SecureDataLen(logonNode.get("SecureDataLen").asInt()));
     }
-    if (root.has("SecureData")) {
-      logon.getHeader().setField(new SecureData(root.get("SecureData").asText()));
+    if (logonNode.has("SecureData")) {
+      logon.getHeader().setField(new SecureData(logonNode.get("SecureData").asText()));
     }
-    logon.getHeader().setField(new MsgSeqNum(root.get("MsgSeqNum").asInt()));
-    if (root.has("SenderSubID")) {
-      logon.getHeader().setField(new SenderSubID(root.get("SenderSubID").asText()));
+    logon.getHeader().setField(new MsgSeqNum(logonNode.get("MsgSeqNum").asInt()));
+    if (logonNode.has("SenderSubID")) {
+      logon.getHeader().setField(new SenderSubID(logonNode.get("SenderSubID").asText()));
     }
-    if (root.has("SenderLocationID")) {
-      logon.getHeader().setField(new SenderLocationID(root.get("SenderLocationID").asText()));
+    if (logonNode.has("SenderLocationID")) {
+      logon.getHeader().setField(new SenderLocationID(logonNode.get("SenderLocationID").asText()));
     }
-    if (root.has("TargetSubID")) {
-      logon.getHeader().setField(new TargetSubID(root.get("TargetSubID").asText()));
+    if (logonNode.has("TargetSubID")) {
+      logon.getHeader().setField(new TargetSubID(logonNode.get("TargetSubID").asText()));
     }
-    if (root.has("TargetLocationID")) {
-      logon.getHeader().setField(new TargetLocationID(root.get("TargetLocationID").asText()));
+    if (logonNode.has("TargetLocationID")) {
+      logon.getHeader().setField(new TargetLocationID(logonNode.get("TargetLocationID").asText()));
     }
-    if (root.has("OnBehalfOfSubID")) {
-      logon.getHeader().setField(new OnBehalfOfSubID(root.get("OnBehalfOfSubID").asText()));
+    if (logonNode.has("OnBehalfOfSubID")) {
+      logon.getHeader().setField(new OnBehalfOfSubID(logonNode.get("OnBehalfOfSubID").asText()));
     }
-    if (root.has("OnBehalfOfLocationID")) {
+    if (logonNode.has("OnBehalfOfLocationID")) {
       logon
           .getHeader()
-          .setField(new OnBehalfOfLocationID(root.get("OnBehalfOfLocationID").asText()));
+          .setField(new OnBehalfOfLocationID(logonNode.get("OnBehalfOfLocationID").asText()));
     }
-    if (root.has("DeliverToSubID")) {
-      logon.getHeader().setField(new DeliverToSubID(root.get("DeliverToSubID").asText()));
+    if (logonNode.has("DeliverToSubID")) {
+      logon.getHeader().setField(new DeliverToSubID(logonNode.get("DeliverToSubID").asText()));
     }
-    if (root.has("DeliverToLocationID")) {
-      logon.getHeader().setField(new DeliverToLocationID(root.get("DeliverToLocationID").asText()));
-    }
-    if (root.has("PossDupFlag")) {
-      logon.getHeader().setField(new PossDupFlag(root.get("PossDupFlag").asBoolean()));
-    }
-    if (root.has("PossResend")) {
-      logon.getHeader().setField(new PossResend(root.get("PossResend").asBoolean()));
-    }
-    logon.getHeader().setField(new SendingTime(newLocalDateTime(root.get("SendingTime").asText())));
-    if (root.has("OrigSendingTime")) {
+    if (logonNode.has("DeliverToLocationID")) {
       logon
           .getHeader()
-          .setField(new OrigSendingTime(newLocalDateTime(root.get("OrigSendingTime").asText())));
+          .setField(new DeliverToLocationID(logonNode.get("DeliverToLocationID").asText()));
     }
-    if (root.has("XmlDataLen")) {
-      logon.getHeader().setField(new XmlDataLen(root.get("XmlDataLen").asInt()));
+    if (logonNode.has("PossDupFlag")) {
+      logon.getHeader().setField(new PossDupFlag(logonNode.get("PossDupFlag").asBoolean()));
     }
-    if (root.has("XmlData")) {
-      logon.getHeader().setField(new XmlData(root.get("XmlData").asText()));
+    if (logonNode.has("PossResend")) {
+      logon.getHeader().setField(new PossResend(logonNode.get("PossResend").asBoolean()));
     }
-    if (root.has("MessageEncoding")) {
-      logon.getHeader().setField(new MessageEncoding(root.get("MessageEncoding").asText()));
-    }
-    if (root.has("LastMsgSeqNumProcessed")) {
+    logon
+        .getHeader()
+        .setField(new SendingTime(newLocalDateTime(logonNode.get("SendingTime").asText())));
+    if (logonNode.has("OrigSendingTime")) {
       logon
           .getHeader()
-          .setField(new LastMsgSeqNumProcessed(root.get("LastMsgSeqNumProcessed").asInt()));
+          .setField(
+              new OrigSendingTime(newLocalDateTime(logonNode.get("OrigSendingTime").asText())));
     }
-    logon.setField(new EncryptMethod(root.get("EncryptMethod").asInt()));
-    logon.setField(new HeartBtInt(root.get("HeartBtInt").asInt()));
-    if (root.has("RawDataLength")) {
-      logon.setField(new RawDataLength(root.get("RawDataLength").asInt()));
+    if (logonNode.has("XmlDataLen")) {
+      logon.getHeader().setField(new XmlDataLen(logonNode.get("XmlDataLen").asInt()));
     }
-    if (root.has("RawData")) {
-      logon.setField(new RawData(root.get("RawData").asText()));
+    if (logonNode.has("XmlData")) {
+      logon.getHeader().setField(new XmlData(logonNode.get("XmlData").asText()));
     }
-    if (root.has("ResetSeqNumFlag")) {
-      logon.setField(new ResetSeqNumFlag(root.get("ResetSeqNumFlag").asBoolean()));
+    if (logonNode.has("MessageEncoding")) {
+      logon.getHeader().setField(new MessageEncoding(logonNode.get("MessageEncoding").asText()));
     }
-    if (root.has("NextExpectedMsgSeqNum")) {
-      logon.setField(new NextExpectedMsgSeqNum(root.get("NextExpectedMsgSeqNum").asInt()));
+    if (logonNode.has("LastMsgSeqNumProcessed")) {
+      logon
+          .getHeader()
+          .setField(new LastMsgSeqNumProcessed(logonNode.get("LastMsgSeqNumProcessed").asInt()));
     }
-    if (root.has("MaxMessageSize")) {
-      logon.setField(new MaxMessageSize(root.get("MaxMessageSize").asInt()));
+    logon.setField(new EncryptMethod(logonNode.get("EncryptMethod").asInt()));
+    logon.setField(new HeartBtInt(logonNode.get("HeartBtInt").asInt()));
+    if (logonNode.has("RawDataLength")) {
+      logon.setField(new RawDataLength(logonNode.get("RawDataLength").asInt()));
     }
-    if (root.has("TestMessageIndicator")) {
-      logon.setField(new TestMessageIndicator(root.get("TestMessageIndicator").asBoolean()));
+    if (logonNode.has("RawData")) {
+      logon.setField(new RawData(logonNode.get("RawData").asText()));
     }
-    if (root.has("Username")) {
-      logon.setField(new Username(root.get("Username").asText()));
+    if (logonNode.has("ResetSeqNumFlag")) {
+      logon.setField(new ResetSeqNumFlag(logonNode.get("ResetSeqNumFlag").asBoolean()));
     }
-    if (root.has("Password")) {
-      logon.setField(new Password(root.get("Password").asText()));
+    if (logonNode.has("NextExpectedMsgSeqNum")) {
+      logon.setField(new NextExpectedMsgSeqNum(logonNode.get("NextExpectedMsgSeqNum").asInt()));
     }
-    if (root.has("NoMsgTypes")) {
-      JsonNode noMsgTypesNode = root.get("NoMsgTypes");
-      for (JsonNode noMsgTypeNode : noMsgTypesNode) {
-        Logon.NoMsgTypes group = new Logon.NoMsgTypes();
-        if (noMsgTypeNode.has("RefMsgType")) {
-          group.setField(new MsgType(noMsgTypeNode.get("RefMsgType").asText()));
+    if (logonNode.has("MaxMessageSize")) {
+      logon.setField(new MaxMessageSize(logonNode.get("MaxMessageSize").asInt()));
+    }
+    if (logonNode.has("TestMessageIndicator")) {
+      logon.setField(new TestMessageIndicator(logonNode.get("TestMessageIndicator").asBoolean()));
+    }
+    if (logonNode.has("Username")) {
+      logon.setField(new Username(logonNode.get("Username").asText()));
+    }
+    if (logonNode.has("Password")) {
+      logon.setField(new Password(logonNode.get("Password").asText()));
+    }
+    if (logonNode.has("NoMsgTypes")) {
+      ArrayNode logonNoMsgTypesGroupNodes = (ArrayNode) logonNode.get("NoMsgTypes");
+      for (JsonNode logonNoMsgTypesGroupNode : logonNoMsgTypesGroupNodes) {
+        Logon.NoMsgTypes logonNoMsgTypesGroup = new Logon.NoMsgTypes();
+        if (logonNoMsgTypesGroupNode.has("RefMsgType")) {
+          logonNoMsgTypesGroup.setField(
+              new RefMsgType(logonNoMsgTypesGroupNode.get("RefMsgType").asText()));
         }
-        if (noMsgTypeNode.has("MsgDirection")) {
-          group.setField(new MsgDirection(noMsgTypeNode.get("MsgDirection").asText().charAt(0)));
+        if (logonNoMsgTypesGroupNode.has("MsgDirection")) {
+          logonNoMsgTypesGroup.setField(
+              new MsgDirection(logonNoMsgTypesGroupNode.get("MsgDirection").asText().charAt(0)));
         }
-        logon.addGroup(group);
+        logon.addGroup(logonNoMsgTypesGroup);
       }
     }
-    if (root.has("SignatureLength")) {
-      logon.getTrailer().setField(new SignatureLength(root.get("SignatureLength").asInt()));
+    if (logonNode.has("SignatureLength")) {
+      logon.getTrailer().setField(new SignatureLength(logonNode.get("SignatureLength").asInt()));
     }
-    if (root.has("Signature")) {
-      logon.getTrailer().setField(new Signature(root.get("Signature").asText()));
+    if (logonNode.has("Signature")) {
+      logon.getTrailer().setField(new Signature(logonNode.get("Signature").asText()));
     }
-    logon.getTrailer().setField(new CheckSum(root.get("CheckSum").asText()));
+    logon.getTrailer().setField(new CheckSum(logonNode.get("CheckSum").asText()));
     return logon;
   }
 }

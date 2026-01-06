@@ -1,6 +1,6 @@
 {
   "BeginString" : "FIX.4.4",
-  "BodyLength" : 142,
+  "BodyLength" : 100,
   "MsgType" : "A",
   "SenderCompID" : "CLIENT",
   "TargetCompID" : "SERVER",
@@ -23,5 +23,5 @@
     "RefMsgType" : "8",
     "MsgDirection" : "R"
   } ],
-  "CheckSum" : "123"
+  "CheckSum" : "000"
 }
