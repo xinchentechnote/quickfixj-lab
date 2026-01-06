@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import quickfix.field.*;
 import quickfix.fix44.*;
-import quickfix.fix44.component.Instrument;
+import quickfix.fix44.component.*;
 
 public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
 
@@ -96,7 +96,6 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
     if (advertisement.isSetField(AdvRefID.FIELD)) {
       advertisementNode.put("AdvRefID", advertisement.getString(AdvRefID.FIELD));
     }
-
     ObjectNode advertisementInstrumentNode = MAPPER.createObjectNode();
     Instrument advertisementInstrument = advertisement.getInstrument();
     if (advertisementInstrument.isSetField(Symbol.FIELD)) {
@@ -110,8 +109,7 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
       advertisementInstrumentNode.put(
           "SecurityIDSource", advertisementInstrument.getString(SecurityIDSource.FIELD));
     }
-    advertisementNode.put("Instrument", advertisementInstrumentNode);
-
+    advertisementNode.set("Instrument", advertisementInstrumentNode);
     advertisementNode.put("AdvSide", advertisement.getString(AdvSide.FIELD));
     advertisementNode.put("Quantity", advertisement.getInt(Quantity.FIELD));
     if (advertisement.isSetField(QtyType.FIELD)) {
@@ -152,7 +150,6 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
       advertisementNode.put(
           "TradingSessionSubID", advertisement.getString(TradingSessionSubID.FIELD));
     }
-
     if (advertisement.getTrailer().isSetField(SignatureLength.FIELD)) {
       advertisementNode.put(
           "SignatureLength", advertisement.getTrailer().getInt(SignatureLength.FIELD));
@@ -329,8 +326,10 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
     if (advertisementNode.has("Instrument")) {
       ObjectNode advertisementInstrumentNode = (ObjectNode) advertisementNode.get("Instrument");
       Instrument advertisementInstrument = advertisement.getInstrument();
-      advertisementInstrument.setField(
-          new Symbol(advertisementInstrumentNode.get("Symbol").asText()));
+      if (advertisementInstrumentNode.has("Symbol")) {
+        advertisementInstrument.setField(
+            new Symbol(advertisementInstrumentNode.get("Symbol").asText()));
+      }
       if (advertisementInstrumentNode.has("SecurityID")) {
         advertisementInstrument.setField(
             new SecurityID(advertisementInstrumentNode.get("SecurityID").asText()));
