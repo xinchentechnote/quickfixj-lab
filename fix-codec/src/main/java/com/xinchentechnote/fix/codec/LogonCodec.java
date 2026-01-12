@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import quickfix.field.*;
 import quickfix.fix44.*;
+import quickfix.fix44.component.*;
 
 public class LogonCodec implements FixJsonCodec<Logon> {
 
@@ -98,15 +99,6 @@ public class LogonCodec implements FixJsonCodec<Logon> {
     if (logon.isSetField(MaxMessageSize.FIELD)) {
       logonNode.put("MaxMessageSize", logon.getInt(MaxMessageSize.FIELD));
     }
-    if (logon.isSetField(TestMessageIndicator.FIELD)) {
-      logonNode.put("TestMessageIndicator", logon.getBoolean(TestMessageIndicator.FIELD));
-    }
-    if (logon.isSetField(Username.FIELD)) {
-      logonNode.put("Username", logon.getString(Username.FIELD));
-    }
-    if (logon.isSetField(Password.FIELD)) {
-      logonNode.put("Password", logon.getString(Password.FIELD));
-    }
     if (logon.isSetField(NoMsgTypes.FIELD)) {
       Logon.NoMsgTypes logonNoMsgTypesGroup = new Logon.NoMsgTypes();
       ArrayNode logonNoMsgTypesNode = MAPPER.createArrayNode();
@@ -124,6 +116,15 @@ public class LogonCodec implements FixJsonCodec<Logon> {
         logonNoMsgTypesNode.add(logonNoMsgTypesGroupNode);
       }
       logonNode.put("NoMsgTypes", logonNoMsgTypesNode);
+    }
+    if (logon.isSetField(TestMessageIndicator.FIELD)) {
+      logonNode.put("TestMessageIndicator", logon.getBoolean(TestMessageIndicator.FIELD));
+    }
+    if (logon.isSetField(Username.FIELD)) {
+      logonNode.put("Username", logon.getString(Username.FIELD));
+    }
+    if (logon.isSetField(Password.FIELD)) {
+      logonNode.put("Password", logon.getString(Password.FIELD));
     }
     if (logon.getTrailer().isSetField(SignatureLength.FIELD)) {
       logonNode.put("SignatureLength", logon.getTrailer().getInt(SignatureLength.FIELD));
@@ -231,15 +232,6 @@ public class LogonCodec implements FixJsonCodec<Logon> {
     if (logonNode.has("MaxMessageSize")) {
       logon.setField(new MaxMessageSize(logonNode.get("MaxMessageSize").asInt()));
     }
-    if (logonNode.has("TestMessageIndicator")) {
-      logon.setField(new TestMessageIndicator(logonNode.get("TestMessageIndicator").asBoolean()));
-    }
-    if (logonNode.has("Username")) {
-      logon.setField(new Username(logonNode.get("Username").asText()));
-    }
-    if (logonNode.has("Password")) {
-      logon.setField(new Password(logonNode.get("Password").asText()));
-    }
     if (logonNode.has("NoMsgTypes")) {
       ArrayNode logonNoMsgTypesGroupNodes = (ArrayNode) logonNode.get("NoMsgTypes");
       for (JsonNode logonNoMsgTypesGroupNode : logonNoMsgTypesGroupNodes) {
@@ -254,6 +246,15 @@ public class LogonCodec implements FixJsonCodec<Logon> {
         }
         logon.addGroup(logonNoMsgTypesGroup);
       }
+    }
+    if (logonNode.has("TestMessageIndicator")) {
+      logon.setField(new TestMessageIndicator(logonNode.get("TestMessageIndicator").asBoolean()));
+    }
+    if (logonNode.has("Username")) {
+      logon.setField(new Username(logonNode.get("Username").asText()));
+    }
+    if (logonNode.has("Password")) {
+      logon.setField(new Password(logonNode.get("Password").asText()));
     }
     if (logonNode.has("SignatureLength")) {
       logon.getTrailer().setField(new SignatureLength(logonNode.get("SignatureLength").asInt()));

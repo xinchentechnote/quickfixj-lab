@@ -282,6 +282,23 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
     if (advertisementNode.has("AdvRefID")) {
       advertisement.setField(new AdvRefID(advertisementNode.get("AdvRefID").asText()));
     }
+    if (advertisementNode.has("Instrument")) {
+      ObjectNode advertisementInstrumentNode = (ObjectNode) advertisementNode.get("Instrument");
+      Instrument advertisementInstrument = advertisement.getInstrument();
+      if (advertisementInstrumentNode.has("Symbol")) {
+        advertisementInstrument.setField(
+            new Symbol(advertisementInstrumentNode.get("Symbol").asText()));
+      }
+      if (advertisementInstrumentNode.has("SecurityID")) {
+        advertisementInstrument.setField(
+            new SecurityID(advertisementInstrumentNode.get("SecurityID").asText()));
+      }
+      if (advertisementInstrumentNode.has("SecurityIDSource")) {
+        advertisementInstrument.setField(
+            new SecurityIDSource(advertisementInstrumentNode.get("SecurityIDSource").asText()));
+      }
+      advertisement.set(advertisementInstrument);
+    }
     advertisement.setField(new AdvSide(advertisementNode.get("AdvSide").asText().charAt(0)));
     advertisement.setField(new Quantity(advertisementNode.get("Quantity").asInt()));
     if (advertisementNode.has("QtyType")) {
@@ -322,23 +339,6 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
     if (advertisementNode.has("TradingSessionSubID")) {
       advertisement.setField(
           new TradingSessionSubID(advertisementNode.get("TradingSessionSubID").asText()));
-    }
-    if (advertisementNode.has("Instrument")) {
-      ObjectNode advertisementInstrumentNode = (ObjectNode) advertisementNode.get("Instrument");
-      Instrument advertisementInstrument = advertisement.getInstrument();
-      if (advertisementInstrumentNode.has("Symbol")) {
-        advertisementInstrument.setField(
-            new Symbol(advertisementInstrumentNode.get("Symbol").asText()));
-      }
-      if (advertisementInstrumentNode.has("SecurityID")) {
-        advertisementInstrument.setField(
-            new SecurityID(advertisementInstrumentNode.get("SecurityID").asText()));
-      }
-      if (advertisementInstrumentNode.has("SecurityIDSource")) {
-        advertisementInstrument.setField(
-            new SecurityIDSource(advertisementInstrumentNode.get("SecurityIDSource").asText()));
-      }
-      advertisement.set(advertisementInstrument);
     }
     if (advertisementNode.has("SignatureLength")) {
       advertisement

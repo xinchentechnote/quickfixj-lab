@@ -13,9 +13,6 @@
   "ResetSeqNumFlag" : false,
   "NextExpectedMsgSeqNum" : 0,
   "MaxMessageSize" : 4096,
-  "TestMessageIndicator" : false,
-  "Username" : "trading_user_001",
-  "Password" : "encrypted_password_123",
   "NoMsgTypes" : [ {
     "RefMsgType" : "D",
     "MsgDirection" : "S"
@@ -23,5 +20,8 @@
     "RefMsgType" : "8",
     "MsgDirection" : "R"
   } ],
+  "TestMessageIndicator" : false,
+  "Username" : "trading_user_001",
+  "Password" : "encrypted_password_123",
   "CheckSum" : "000"
 }
