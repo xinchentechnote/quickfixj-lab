@@ -250,7 +250,7 @@ public class LogonCodec implements FixJsonCodec<Logon> {
         if (logonNoHopsGroupNode.has("HopRefID")) {
           logonNoHopsGroup.setField(new HopRefID(logonNoHopsGroupNode.get("HopRefID").asInt()));
         }
-        logon.addGroup(logonNoHopsGroup);
+        logon.getHeader().addGroup(logonNoHopsGroup);
       }
     }
     logon.setField(new EncryptMethod(logonNode.get("EncryptMethod").asInt()));
