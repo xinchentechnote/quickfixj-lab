@@ -82,6 +82,26 @@ public class LogonCodec implements FixJsonCodec<Logon> {
       logonNode.put(
           "LastMsgSeqNumProcessed", logon.getHeader().getInt(LastMsgSeqNumProcessed.FIELD));
     }
+    if (logon.getHeader().isSetField(NoHops.FIELD)) {
+      Message.Header.NoHops logonNoHopsGroup = new Message.Header.NoHops();
+      ArrayNode logonNoHopsNode = MAPPER.createArrayNode();
+      for (int i = 1; i <= logon.getGroupCount(NoHops.FIELD); i++) {
+        logon.getGroup(i, logonNoHopsGroup);
+        ObjectNode logonNoHopsGroupNode = MAPPER.createObjectNode();
+        if (logonNoHopsGroup.isSetField(HopCompID.FIELD)) {
+          logonNoHopsGroupNode.put("HopCompID", logonNoHopsGroup.getString(HopCompID.FIELD));
+        }
+        if (logonNoHopsGroup.isSetField(HopSendingTime.FIELD)) {
+          logonNoHopsGroupNode.put(
+              "HopSendingTime", logonNoHopsGroup.getUtcTimeStamp(HopSendingTime.FIELD).toString());
+        }
+        if (logonNoHopsGroup.isSetField(HopRefID.FIELD)) {
+          logonNoHopsGroupNode.put("HopRefID", logonNoHopsGroup.getInt(HopRefID.FIELD));
+        }
+        logonNoHopsNode.add(logonNoHopsGroupNode);
+      }
+      logonNode.put("NoHops", logonNoHopsNode);
+    }
     logonNode.put("EncryptMethod", logon.getInt(EncryptMethod.FIELD));
     logonNode.put("HeartBtInt", logon.getInt(HeartBtInt.FIELD));
     if (logon.isSetField(RawDataLength.FIELD)) {
@@ -214,6 +234,24 @@ public class LogonCodec implements FixJsonCodec<Logon> {
       logon
           .getHeader()
           .setField(new LastMsgSeqNumProcessed(logonNode.get("LastMsgSeqNumProcessed").asInt()));
+    }
+    if (logonNode.has("NoHops")) {
+      ArrayNode logonNoHopsGroupNodes = (ArrayNode) logonNode.get("NoHops");
+      for (JsonNode logonNoHopsGroupNode : logonNoHopsGroupNodes) {
+        Message.Header.NoHops logonNoHopsGroup = new Message.Header.NoHops();
+        if (logonNoHopsGroupNode.has("HopCompID")) {
+          logonNoHopsGroup.setField(new HopCompID(logonNoHopsGroupNode.get("HopCompID").asText()));
+        }
+        if (logonNoHopsGroupNode.has("HopSendingTime")) {
+          logonNoHopsGroup.setField(
+              new HopSendingTime(
+                  newLocalDateTime(logonNoHopsGroupNode.get("HopSendingTime").asText())));
+        }
+        if (logonNoHopsGroupNode.has("HopRefID")) {
+          logonNoHopsGroup.setField(new HopRefID(logonNoHopsGroupNode.get("HopRefID").asInt()));
+        }
+        logon.addGroup(logonNoHopsGroup);
+      }
     }
     logon.setField(new EncryptMethod(logonNode.get("EncryptMethod").asInt()));
     logon.setField(new HeartBtInt(logonNode.get("HeartBtInt").asInt()));
