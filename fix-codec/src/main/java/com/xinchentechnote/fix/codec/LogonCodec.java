@@ -2,8 +2,8 @@ package com.xinchentechnote.fix.codec;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import quickfix.Group;
 import quickfix.field.*;
 import quickfix.fix44.*;
@@ -125,7 +125,11 @@ public class LogonCodec implements FixJsonCodec<Logon> {
       logonNode.put("MaxMessageSize", logon.getInt(MaxMessageSize.FIELD));
     }
     if (logon.isSetField(NoMsgTypes.FIELD)) {
-      Logon.NoMsgTypes logonNoMsgTypesGroup = new Logon.NoMsgTypes();
+      Group logonNoMsgTypesGroup =
+          new Group(
+              NoMsgTypes.FIELD,
+              RefMsgType.FIELD,
+              new int[] {RefMsgType.FIELD, MsgDirection.FIELD, 0});
       ArrayNode logonNoMsgTypesNode = MAPPER.createArrayNode();
       for (int i = 1; i <= logon.getGroupCount(NoMsgTypes.FIELD); i++) {
         logon.getGroup(i, logonNoMsgTypesGroup);
@@ -282,7 +286,11 @@ public class LogonCodec implements FixJsonCodec<Logon> {
     if (logonNode.has("NoMsgTypes")) {
       ArrayNode logonNoMsgTypesGroupNodes = (ArrayNode) logonNode.get("NoMsgTypes");
       for (JsonNode logonNoMsgTypesGroupNode : logonNoMsgTypesGroupNodes) {
-        Logon.NoMsgTypes logonNoMsgTypesGroup = new Logon.NoMsgTypes();
+        Group logonNoMsgTypesGroup =
+            new Group(
+                NoMsgTypes.FIELD,
+                RefMsgType.FIELD,
+                new int[] {RefMsgType.FIELD, MsgDirection.FIELD, 0});
         if (logonNoMsgTypesGroupNode.has("RefMsgType")) {
           logonNoMsgTypesGroup.setField(
               new RefMsgType(logonNoMsgTypesGroupNode.get("RefMsgType").asText()));
