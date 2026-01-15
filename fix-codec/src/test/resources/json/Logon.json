@@ -6,6 +6,15 @@
   "TargetCompID" : "SERVER",
   "MsgSeqNum" : 1,
   "SendingTime" : "2025-12-31T16:03:33",
+  "NoHops" : [ {
+    "HopCompID" : "HOP1",
+    "HopSendingTime" : "2025-12-31T16:00",
+    "HopRefID" : 1
+  }, {
+    "HopCompID" : "HOP2",
+    "HopSendingTime" : "2025-12-31T16:01",
+    "HopRefID" : 2
+  } ],
   "EncryptMethod" : 0,
   "HeartBtInt" : 30,
   "RawDataLength" : 20,

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import quickfix.Group;
 import quickfix.field.*;
 import quickfix.fix44.*;
 import quickfix.fix44.component.*;
@@ -83,10 +84,14 @@ public class LogonCodec implements FixJsonCodec<Logon> {
           "LastMsgSeqNumProcessed", logon.getHeader().getInt(LastMsgSeqNumProcessed.FIELD));
     }
     if (logon.getHeader().isSetField(NoHops.FIELD)) {
-      Message.Header.NoHops logonNoHopsGroup = new Message.Header.NoHops();
+      Group logonNoHopsGroup =
+          new Group(
+              NoHops.FIELD,
+              HopCompID.FIELD,
+              new int[] {HopCompID.FIELD, HopSendingTime.FIELD, HopRefID.FIELD, 0});
       ArrayNode logonNoHopsNode = MAPPER.createArrayNode();
-      for (int i = 1; i <= logon.getGroupCount(NoHops.FIELD); i++) {
-        logon.getGroup(i, logonNoHopsGroup);
+      for (int i = 1; i <= logon.getHeader().getGroupCount(NoHops.FIELD); i++) {
+        logon.getHeader().getGroup(i, logonNoHopsGroup);
         ObjectNode logonNoHopsGroupNode = MAPPER.createObjectNode();
         if (logonNoHopsGroup.isSetField(HopCompID.FIELD)) {
           logonNoHopsGroupNode.put("HopCompID", logonNoHopsGroup.getString(HopCompID.FIELD));
@@ -238,7 +243,11 @@ public class LogonCodec implements FixJsonCodec<Logon> {
     if (logonNode.has("NoHops")) {
       ArrayNode logonNoHopsGroupNodes = (ArrayNode) logonNode.get("NoHops");
       for (JsonNode logonNoHopsGroupNode : logonNoHopsGroupNodes) {
-        Message.Header.NoHops logonNoHopsGroup = new Message.Header.NoHops();
+        Group logonNoHopsGroup =
+            new Group(
+                NoHops.FIELD,
+                HopCompID.FIELD,
+                new int[] {HopCompID.FIELD, HopSendingTime.FIELD, HopRefID.FIELD, 0});
         if (logonNoHopsGroupNode.has("HopCompID")) {
           logonNoHopsGroup.setField(new HopCompID(logonNoHopsGroupNode.get("HopCompID").asText()));
         }
