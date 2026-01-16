@@ -1,0 +1,3 @@
+[submodule "submodules/fix-schema-tools"]
+	path = submodules/fix-schema-tools
+	url = https://github.com/xinchentechnote/fix-schema-tools.git
