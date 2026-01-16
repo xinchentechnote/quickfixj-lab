@@ -3,6 +3,9 @@ package com.xinchentechnote.fix.codec;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import quickfix.Group;
+import quickfix.Message;
 import quickfix.field.*;
 import quickfix.fix44.*;
 import quickfix.fix44.component.*;
@@ -14,82 +17,99 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
   @Override
   public String encode(Advertisement advertisement) throws Exception {
     ObjectNode advertisementNode = MAPPER.createObjectNode();
-    advertisementNode.put("BeginString", advertisement.getHeader().getString(BeginString.FIELD));
-    advertisementNode.put("BodyLength", advertisement.getHeader().getInt(BodyLength.FIELD));
-    advertisementNode.put("MsgType", advertisement.getHeader().getString(MsgType.FIELD));
-    advertisementNode.put("SenderCompID", advertisement.getHeader().getString(SenderCompID.FIELD));
-    advertisementNode.put("TargetCompID", advertisement.getHeader().getString(TargetCompID.FIELD));
-    if (advertisement.getHeader().isSetField(OnBehalfOfCompID.FIELD)) {
+    Message.Header header = advertisement.getHeader();
+    Message.Trailer trailer = advertisement.getTrailer();
+    advertisementNode.put("BeginString", header.getString(BeginString.FIELD));
+    advertisementNode.put("BodyLength", header.getInt(BodyLength.FIELD));
+    advertisementNode.put("MsgType", header.getString(MsgType.FIELD));
+    advertisementNode.put("SenderCompID", header.getString(SenderCompID.FIELD));
+    advertisementNode.put("TargetCompID", header.getString(TargetCompID.FIELD));
+    if (header.isSetField(OnBehalfOfCompID.FIELD)) {
+      advertisementNode.put("OnBehalfOfCompID", header.getString(OnBehalfOfCompID.FIELD));
+    }
+    if (header.isSetField(DeliverToCompID.FIELD)) {
+      advertisementNode.put("DeliverToCompID", header.getString(DeliverToCompID.FIELD));
+    }
+    if (header.isSetField(SecureDataLen.FIELD)) {
+      advertisementNode.put("SecureDataLen", header.getInt(SecureDataLen.FIELD));
+    }
+    if (header.isSetField(SecureData.FIELD)) {
+      advertisementNode.put("SecureData", header.getString(SecureData.FIELD));
+    }
+    advertisementNode.put("MsgSeqNum", header.getInt(MsgSeqNum.FIELD));
+    if (header.isSetField(SenderSubID.FIELD)) {
+      advertisementNode.put("SenderSubID", header.getString(SenderSubID.FIELD));
+    }
+    if (header.isSetField(SenderLocationID.FIELD)) {
+      advertisementNode.put("SenderLocationID", header.getString(SenderLocationID.FIELD));
+    }
+    if (header.isSetField(TargetSubID.FIELD)) {
+      advertisementNode.put("TargetSubID", header.getString(TargetSubID.FIELD));
+    }
+    if (header.isSetField(TargetLocationID.FIELD)) {
+      advertisementNode.put("TargetLocationID", header.getString(TargetLocationID.FIELD));
+    }
+    if (header.isSetField(OnBehalfOfSubID.FIELD)) {
+      advertisementNode.put("OnBehalfOfSubID", header.getString(OnBehalfOfSubID.FIELD));
+    }
+    if (header.isSetField(OnBehalfOfLocationID.FIELD)) {
+      advertisementNode.put("OnBehalfOfLocationID", header.getString(OnBehalfOfLocationID.FIELD));
+    }
+    if (header.isSetField(DeliverToSubID.FIELD)) {
+      advertisementNode.put("DeliverToSubID", header.getString(DeliverToSubID.FIELD));
+    }
+    if (header.isSetField(DeliverToLocationID.FIELD)) {
+      advertisementNode.put("DeliverToLocationID", header.getString(DeliverToLocationID.FIELD));
+    }
+    if (header.isSetField(PossDupFlag.FIELD)) {
+      advertisementNode.put("PossDupFlag", header.getBoolean(PossDupFlag.FIELD));
+    }
+    if (header.isSetField(PossResend.FIELD)) {
+      advertisementNode.put("PossResend", header.getBoolean(PossResend.FIELD));
+    }
+    advertisementNode.put("SendingTime", header.getUtcTimeStamp(SendingTime.FIELD).toString());
+    if (header.isSetField(OrigSendingTime.FIELD)) {
       advertisementNode.put(
-          "OnBehalfOfCompID", advertisement.getHeader().getString(OnBehalfOfCompID.FIELD));
+          "OrigSendingTime", header.getUtcTimeStamp(OrigSendingTime.FIELD).toString());
     }
-    if (advertisement.getHeader().isSetField(DeliverToCompID.FIELD)) {
-      advertisementNode.put(
-          "DeliverToCompID", advertisement.getHeader().getString(DeliverToCompID.FIELD));
+    if (header.isSetField(XmlDataLen.FIELD)) {
+      advertisementNode.put("XmlDataLen", header.getInt(XmlDataLen.FIELD));
     }
-    if (advertisement.getHeader().isSetField(SecureDataLen.FIELD)) {
-      advertisementNode.put("SecureDataLen", advertisement.getHeader().getInt(SecureDataLen.FIELD));
+    if (header.isSetField(XmlData.FIELD)) {
+      advertisementNode.put("XmlData", header.getString(XmlData.FIELD));
     }
-    if (advertisement.getHeader().isSetField(SecureData.FIELD)) {
-      advertisementNode.put("SecureData", advertisement.getHeader().getString(SecureData.FIELD));
+    if (header.isSetField(MessageEncoding.FIELD)) {
+      advertisementNode.put("MessageEncoding", header.getString(MessageEncoding.FIELD));
     }
-    advertisementNode.put("MsgSeqNum", advertisement.getHeader().getInt(MsgSeqNum.FIELD));
-    if (advertisement.getHeader().isSetField(SenderSubID.FIELD)) {
-      advertisementNode.put("SenderSubID", advertisement.getHeader().getString(SenderSubID.FIELD));
+    if (header.isSetField(LastMsgSeqNumProcessed.FIELD)) {
+      advertisementNode.put("LastMsgSeqNumProcessed", header.getInt(LastMsgSeqNumProcessed.FIELD));
     }
-    if (advertisement.getHeader().isSetField(SenderLocationID.FIELD)) {
-      advertisementNode.put(
-          "SenderLocationID", advertisement.getHeader().getString(SenderLocationID.FIELD));
-    }
-    if (advertisement.getHeader().isSetField(TargetSubID.FIELD)) {
-      advertisementNode.put("TargetSubID", advertisement.getHeader().getString(TargetSubID.FIELD));
-    }
-    if (advertisement.getHeader().isSetField(TargetLocationID.FIELD)) {
-      advertisementNode.put(
-          "TargetLocationID", advertisement.getHeader().getString(TargetLocationID.FIELD));
-    }
-    if (advertisement.getHeader().isSetField(OnBehalfOfSubID.FIELD)) {
-      advertisementNode.put(
-          "OnBehalfOfSubID", advertisement.getHeader().getString(OnBehalfOfSubID.FIELD));
-    }
-    if (advertisement.getHeader().isSetField(OnBehalfOfLocationID.FIELD)) {
-      advertisementNode.put(
-          "OnBehalfOfLocationID", advertisement.getHeader().getString(OnBehalfOfLocationID.FIELD));
-    }
-    if (advertisement.getHeader().isSetField(DeliverToSubID.FIELD)) {
-      advertisementNode.put(
-          "DeliverToSubID", advertisement.getHeader().getString(DeliverToSubID.FIELD));
-    }
-    if (advertisement.getHeader().isSetField(DeliverToLocationID.FIELD)) {
-      advertisementNode.put(
-          "DeliverToLocationID", advertisement.getHeader().getString(DeliverToLocationID.FIELD));
-    }
-    if (advertisement.getHeader().isSetField(PossDupFlag.FIELD)) {
-      advertisementNode.put("PossDupFlag", advertisement.getHeader().getBoolean(PossDupFlag.FIELD));
-    }
-    if (advertisement.getHeader().isSetField(PossResend.FIELD)) {
-      advertisementNode.put("PossResend", advertisement.getHeader().getBoolean(PossResend.FIELD));
-    }
-    advertisementNode.put(
-        "SendingTime", advertisement.getHeader().getUtcTimeStamp(SendingTime.FIELD).toString());
-    if (advertisement.getHeader().isSetField(OrigSendingTime.FIELD)) {
-      advertisementNode.put(
-          "OrigSendingTime",
-          advertisement.getHeader().getUtcTimeStamp(OrigSendingTime.FIELD).toString());
-    }
-    if (advertisement.getHeader().isSetField(XmlDataLen.FIELD)) {
-      advertisementNode.put("XmlDataLen", advertisement.getHeader().getInt(XmlDataLen.FIELD));
-    }
-    if (advertisement.getHeader().isSetField(XmlData.FIELD)) {
-      advertisementNode.put("XmlData", advertisement.getHeader().getString(XmlData.FIELD));
-    }
-    if (advertisement.getHeader().isSetField(MessageEncoding.FIELD)) {
-      advertisementNode.put(
-          "MessageEncoding", advertisement.getHeader().getString(MessageEncoding.FIELD));
-    }
-    if (advertisement.getHeader().isSetField(LastMsgSeqNumProcessed.FIELD)) {
-      advertisementNode.put(
-          "LastMsgSeqNumProcessed", advertisement.getHeader().getInt(LastMsgSeqNumProcessed.FIELD));
+    if (header.isSetField(NoHops.FIELD)) {
+      Group advertisementNoHopsGroup =
+          new Group(
+              NoHops.FIELD,
+              HopCompID.FIELD,
+              new int[] {HopCompID.FIELD, HopSendingTime.FIELD, HopRefID.FIELD, 0});
+      ArrayNode advertisementNoHopsNode = MAPPER.createArrayNode();
+      for (int i = 1; i <= header.getGroupCount(NoHops.FIELD); i++) {
+        header.getGroup(i, advertisementNoHopsGroup);
+        ObjectNode advertisementNoHopsGroupNode = MAPPER.createObjectNode();
+        if (advertisementNoHopsGroup.isSetField(HopCompID.FIELD)) {
+          advertisementNoHopsGroupNode.put(
+              "HopCompID", advertisementNoHopsGroup.getString(HopCompID.FIELD));
+        }
+        if (advertisementNoHopsGroup.isSetField(HopSendingTime.FIELD)) {
+          advertisementNoHopsGroupNode.put(
+              "HopSendingTime",
+              advertisementNoHopsGroup.getUtcTimeStamp(HopSendingTime.FIELD).toString());
+        }
+        if (advertisementNoHopsGroup.isSetField(HopRefID.FIELD)) {
+          advertisementNoHopsGroupNode.put(
+              "HopRefID", advertisementNoHopsGroup.getInt(HopRefID.FIELD));
+        }
+        advertisementNoHopsNode.add(advertisementNoHopsGroupNode);
+      }
+      advertisementNode.put("NoHops", advertisementNoHopsNode);
     }
     advertisementNode.put("AdvId", advertisement.getString(AdvId.FIELD));
     advertisementNode.put("AdvTransType", advertisement.getString(AdvTransType.FIELD));
@@ -97,17 +117,14 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
       advertisementNode.put("AdvRefID", advertisement.getString(AdvRefID.FIELD));
     }
     ObjectNode advertisementInstrumentNode = MAPPER.createObjectNode();
-    Instrument advertisementInstrument = advertisement.getInstrument();
-    if (advertisementInstrument.isSetField(Symbol.FIELD)) {
-      advertisementInstrumentNode.put("Symbol", advertisementInstrument.getString(Symbol.FIELD));
+    if (advertisement.isSetField(Symbol.FIELD)) {
+        advertisementInstrumentNode.put("Symbol", advertisement.getString(Symbol.FIELD));
     }
-    if (advertisementInstrument.isSetField(SecurityID.FIELD)) {
-      advertisementInstrumentNode.put(
-          "SecurityID", advertisementInstrument.getString(SecurityID.FIELD));
+    if (advertisement.isSetField(SecurityID.FIELD)) {
+        advertisementInstrumentNode.put("SecurityID", advertisement.getString(SecurityID.FIELD));
     }
-    if (advertisementInstrument.isSetField(SecurityIDSource.FIELD)) {
-      advertisementInstrumentNode.put(
-          "SecurityIDSource", advertisementInstrument.getString(SecurityIDSource.FIELD));
+    if (advertisement.isSetField(SecurityIDSource.FIELD)) {
+        advertisementInstrumentNode.put("SecurityIDSource", advertisement.getString(SecurityIDSource.FIELD));
     }
     advertisementNode.set("Instrument", advertisementInstrumentNode);
     advertisementNode.put("AdvSide", advertisement.getString(AdvSide.FIELD));
@@ -150,14 +167,13 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
       advertisementNode.put(
           "TradingSessionSubID", advertisement.getString(TradingSessionSubID.FIELD));
     }
-    if (advertisement.getTrailer().isSetField(SignatureLength.FIELD)) {
-      advertisementNode.put(
-          "SignatureLength", advertisement.getTrailer().getInt(SignatureLength.FIELD));
+    if (trailer.isSetField(SignatureLength.FIELD)) {
+      advertisementNode.put("SignatureLength", trailer.getInt(SignatureLength.FIELD));
     }
-    if (advertisement.getTrailer().isSetField(Signature.FIELD)) {
-      advertisementNode.put("Signature", advertisement.getTrailer().getString(Signature.FIELD));
+    if (trailer.isSetField(Signature.FIELD)) {
+      advertisementNode.put("Signature", trailer.getString(Signature.FIELD));
     }
-    advertisementNode.put("CheckSum", advertisement.getTrailer().getString(CheckSum.FIELD));
+    advertisementNode.put("CheckSum", trailer.getString(CheckSum.FIELD));
     return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(advertisementNode);
   }
 
@@ -165,117 +181,100 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
   public Advertisement decode(String jsonString) throws Exception {
     JsonNode advertisementNode = MAPPER.readTree(jsonString);
     Advertisement advertisement = new Advertisement();
-    advertisement
-        .getHeader()
-        .setField(new BeginString(advertisementNode.get("BeginString").asText()));
-    advertisement.getHeader().setField(new BodyLength(advertisementNode.get("BodyLength").asInt()));
-    advertisement.getHeader().setField(new MsgType(advertisementNode.get("MsgType").asText()));
-    advertisement
-        .getHeader()
-        .setField(new SenderCompID(advertisementNode.get("SenderCompID").asText()));
-    advertisement
-        .getHeader()
-        .setField(new TargetCompID(advertisementNode.get("TargetCompID").asText()));
+    Message.Header header = advertisement.getHeader();
+    Message.Trailer trailer = advertisement.getTrailer();
+    header.setField(new BeginString(advertisementNode.get("BeginString").asText()));
+    header.setField(new BodyLength(advertisementNode.get("BodyLength").asInt()));
+    header.setField(new MsgType(advertisementNode.get("MsgType").asText()));
+    header.setField(new SenderCompID(advertisementNode.get("SenderCompID").asText()));
+    header.setField(new TargetCompID(advertisementNode.get("TargetCompID").asText()));
     if (advertisementNode.has("OnBehalfOfCompID")) {
-      advertisement
-          .getHeader()
-          .setField(new OnBehalfOfCompID(advertisementNode.get("OnBehalfOfCompID").asText()));
+      header.setField(new OnBehalfOfCompID(advertisementNode.get("OnBehalfOfCompID").asText()));
     }
     if (advertisementNode.has("DeliverToCompID")) {
-      advertisement
-          .getHeader()
-          .setField(new DeliverToCompID(advertisementNode.get("DeliverToCompID").asText()));
+      header.setField(new DeliverToCompID(advertisementNode.get("DeliverToCompID").asText()));
     }
     if (advertisementNode.has("SecureDataLen")) {
-      advertisement
-          .getHeader()
-          .setField(new SecureDataLen(advertisementNode.get("SecureDataLen").asInt()));
+      header.setField(new SecureDataLen(advertisementNode.get("SecureDataLen").asInt()));
     }
     if (advertisementNode.has("SecureData")) {
-      advertisement
-          .getHeader()
-          .setField(new SecureData(advertisementNode.get("SecureData").asText()));
+      header.setField(new SecureData(advertisementNode.get("SecureData").asText()));
     }
-    advertisement.getHeader().setField(new MsgSeqNum(advertisementNode.get("MsgSeqNum").asInt()));
+    header.setField(new MsgSeqNum(advertisementNode.get("MsgSeqNum").asInt()));
     if (advertisementNode.has("SenderSubID")) {
-      advertisement
-          .getHeader()
-          .setField(new SenderSubID(advertisementNode.get("SenderSubID").asText()));
+      header.setField(new SenderSubID(advertisementNode.get("SenderSubID").asText()));
     }
     if (advertisementNode.has("SenderLocationID")) {
-      advertisement
-          .getHeader()
-          .setField(new SenderLocationID(advertisementNode.get("SenderLocationID").asText()));
+      header.setField(new SenderLocationID(advertisementNode.get("SenderLocationID").asText()));
     }
     if (advertisementNode.has("TargetSubID")) {
-      advertisement
-          .getHeader()
-          .setField(new TargetSubID(advertisementNode.get("TargetSubID").asText()));
+      header.setField(new TargetSubID(advertisementNode.get("TargetSubID").asText()));
     }
     if (advertisementNode.has("TargetLocationID")) {
-      advertisement
-          .getHeader()
-          .setField(new TargetLocationID(advertisementNode.get("TargetLocationID").asText()));
+      header.setField(new TargetLocationID(advertisementNode.get("TargetLocationID").asText()));
     }
     if (advertisementNode.has("OnBehalfOfSubID")) {
-      advertisement
-          .getHeader()
-          .setField(new OnBehalfOfSubID(advertisementNode.get("OnBehalfOfSubID").asText()));
+      header.setField(new OnBehalfOfSubID(advertisementNode.get("OnBehalfOfSubID").asText()));
     }
     if (advertisementNode.has("OnBehalfOfLocationID")) {
-      advertisement
-          .getHeader()
-          .setField(
-              new OnBehalfOfLocationID(advertisementNode.get("OnBehalfOfLocationID").asText()));
+      header.setField(
+          new OnBehalfOfLocationID(advertisementNode.get("OnBehalfOfLocationID").asText()));
     }
     if (advertisementNode.has("DeliverToSubID")) {
-      advertisement
-          .getHeader()
-          .setField(new DeliverToSubID(advertisementNode.get("DeliverToSubID").asText()));
+      header.setField(new DeliverToSubID(advertisementNode.get("DeliverToSubID").asText()));
     }
     if (advertisementNode.has("DeliverToLocationID")) {
-      advertisement
-          .getHeader()
-          .setField(new DeliverToLocationID(advertisementNode.get("DeliverToLocationID").asText()));
+      header.setField(
+          new DeliverToLocationID(advertisementNode.get("DeliverToLocationID").asText()));
     }
     if (advertisementNode.has("PossDupFlag")) {
-      advertisement
-          .getHeader()
-          .setField(new PossDupFlag(advertisementNode.get("PossDupFlag").asBoolean()));
+      header.setField(new PossDupFlag(advertisementNode.get("PossDupFlag").asBoolean()));
     }
     if (advertisementNode.has("PossResend")) {
-      advertisement
-          .getHeader()
-          .setField(new PossResend(advertisementNode.get("PossResend").asBoolean()));
+      header.setField(new PossResend(advertisementNode.get("PossResend").asBoolean()));
     }
-    advertisement
-        .getHeader()
-        .setField(new SendingTime(newLocalDateTime(advertisementNode.get("SendingTime").asText())));
+    header.setField(
+        new SendingTime(newLocalDateTime(advertisementNode.get("SendingTime").asText())));
     if (advertisementNode.has("OrigSendingTime")) {
-      advertisement
-          .getHeader()
-          .setField(
-              new OrigSendingTime(
-                  newLocalDateTime(advertisementNode.get("OrigSendingTime").asText())));
+      header.setField(
+          new OrigSendingTime(newLocalDateTime(advertisementNode.get("OrigSendingTime").asText())));
     }
     if (advertisementNode.has("XmlDataLen")) {
-      advertisement
-          .getHeader()
-          .setField(new XmlDataLen(advertisementNode.get("XmlDataLen").asInt()));
+      header.setField(new XmlDataLen(advertisementNode.get("XmlDataLen").asInt()));
     }
     if (advertisementNode.has("XmlData")) {
-      advertisement.getHeader().setField(new XmlData(advertisementNode.get("XmlData").asText()));
+      header.setField(new XmlData(advertisementNode.get("XmlData").asText()));
     }
     if (advertisementNode.has("MessageEncoding")) {
-      advertisement
-          .getHeader()
-          .setField(new MessageEncoding(advertisementNode.get("MessageEncoding").asText()));
+      header.setField(new MessageEncoding(advertisementNode.get("MessageEncoding").asText()));
     }
     if (advertisementNode.has("LastMsgSeqNumProcessed")) {
-      advertisement
-          .getHeader()
-          .setField(
-              new LastMsgSeqNumProcessed(advertisementNode.get("LastMsgSeqNumProcessed").asInt()));
+      header.setField(
+          new LastMsgSeqNumProcessed(advertisementNode.get("LastMsgSeqNumProcessed").asInt()));
+    }
+    if (advertisementNode.has("NoHops")) {
+      ArrayNode advertisementNoHopsGroupNodes = (ArrayNode) advertisementNode.get("NoHops");
+      for (JsonNode advertisementNoHopsGroupNode : advertisementNoHopsGroupNodes) {
+        Group advertisementNoHopsGroup =
+            new Group(
+                NoHops.FIELD,
+                HopCompID.FIELD,
+                new int[] {HopCompID.FIELD, HopSendingTime.FIELD, HopRefID.FIELD, 0});
+        if (advertisementNoHopsGroupNode.has("HopCompID")) {
+          advertisementNoHopsGroup.setField(
+              new HopCompID(advertisementNoHopsGroupNode.get("HopCompID").asText()));
+        }
+        if (advertisementNoHopsGroupNode.has("HopSendingTime")) {
+          advertisementNoHopsGroup.setField(
+              new HopSendingTime(
+                  newLocalDateTime(advertisementNoHopsGroupNode.get("HopSendingTime").asText())));
+        }
+        if (advertisementNoHopsGroupNode.has("HopRefID")) {
+          advertisementNoHopsGroup.setField(
+              new HopRefID(advertisementNoHopsGroupNode.get("HopRefID").asInt()));
+        }
+        header.addGroup(advertisementNoHopsGroup);
+      }
     }
     advertisement.setField(new AdvId(advertisementNode.get("AdvId").asText()));
     advertisement.setField(new AdvTransType(advertisementNode.get("AdvTransType").asText()));
@@ -284,20 +283,16 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
     }
     if (advertisementNode.has("Instrument")) {
       ObjectNode advertisementInstrumentNode = (ObjectNode) advertisementNode.get("Instrument");
-      Instrument advertisementInstrument = advertisement.getInstrument();
       if (advertisementInstrumentNode.has("Symbol")) {
-        advertisementInstrument.setField(
-            new Symbol(advertisementInstrumentNode.get("Symbol").asText()));
+        advertisement.setField(new Symbol(advertisementInstrumentNode.get("Symbol").asText()));
       }
       if (advertisementInstrumentNode.has("SecurityID")) {
-        advertisementInstrument.setField(
-            new SecurityID(advertisementInstrumentNode.get("SecurityID").asText()));
+        advertisement.setField(new SecurityID(advertisementInstrumentNode.get("SecurityID").asText()));
       }
       if (advertisementInstrumentNode.has("SecurityIDSource")) {
-        advertisementInstrument.setField(
+        advertisement.setField(
             new SecurityIDSource(advertisementInstrumentNode.get("SecurityIDSource").asText()));
       }
-      advertisement.set(advertisementInstrument);
     }
     advertisement.setField(new AdvSide(advertisementNode.get("AdvSide").asText().charAt(0)));
     advertisement.setField(new Quantity(advertisementNode.get("Quantity").asInt()));
@@ -341,16 +336,12 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
           new TradingSessionSubID(advertisementNode.get("TradingSessionSubID").asText()));
     }
     if (advertisementNode.has("SignatureLength")) {
-      advertisement
-          .getTrailer()
-          .setField(new SignatureLength(advertisementNode.get("SignatureLength").asInt()));
+      trailer.setField(new SignatureLength(advertisementNode.get("SignatureLength").asInt()));
     }
     if (advertisementNode.has("Signature")) {
-      advertisement
-          .getTrailer()
-          .setField(new Signature(advertisementNode.get("Signature").asText()));
+      trailer.setField(new Signature(advertisementNode.get("Signature").asText()));
     }
-    advertisement.getTrailer().setField(new CheckSum(advertisementNode.get("CheckSum").asText()));
+    trailer.setField(new CheckSum(advertisementNode.get("CheckSum").asText()));
     return advertisement;
   }
 }
