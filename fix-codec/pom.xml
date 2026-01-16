@@ -34,5 +34,10 @@
           <version>33.0.0-jre</version>
           <scope>test</scope>
       </dependency>
+      <dependency>
+          <groupId>com.xinchentechnote.fix</groupId>
+          <artifactId>fix-schema-tools</artifactId>
+          <version>1.0-SNAPSHOT</version>
+      </dependency>
   </dependencies>
 </project>
