@@ -15,6 +15,7 @@ public class LogonCodecTest {
     String json = FileUtils.readFileToString("json/Logon.simple.json");
     LogonCodec codec = new LogonCodec();
     Logon decode = codec.decode(json);
+    decode.toString();
     String encode = codec.encode(decode);
     assertEquals(json, encode);
   }
@@ -25,6 +26,7 @@ public class LogonCodecTest {
     String json = FileUtils.readFileToString("json/Logon.json");
     LogonCodec codec = new LogonCodec();
     Logon decode = codec.decode(json);
+    decode.toString();
     String encode = codec.encode(decode);
     assertEquals(json, encode);
   }

@@ -1,7 +1,7 @@
 {
   "BeginString" : "FIX.4.4",
-  "BodyLength" : 142,
-  "MsgType" : "A",
+  "BodyLength" : 100,
+  "MsgType" : "7",
   "SenderCompID" : "CLIENT",
   "TargetCompID" : "SERVER",
   "MsgSeqNum" : 1,
@@ -26,5 +26,5 @@
   "LastMkt" : "XNAS",
   "TradingSessionID" : "1",
   "TradingSessionSubID" : "2",
-  "CheckSum" : "123"
+  "CheckSum" : "000"
 }

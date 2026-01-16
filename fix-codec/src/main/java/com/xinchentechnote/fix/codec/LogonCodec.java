@@ -2,8 +2,8 @@ package com.xinchentechnote.fix.codec;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import quickfix.Group;
 import quickfix.Message;
 import quickfix.field.*;
@@ -105,7 +105,7 @@ public class LogonCodec implements FixJsonCodec<Logon> {
         }
         logonNoHopsNode.add(logonNoHopsGroupNode);
       }
-      logonNode.put("NoHops", logonNoHopsNode);
+      logonNode.set("NoHops", logonNoHopsNode);
     }
     logonNode.put("EncryptMethod", logon.getInt(EncryptMethod.FIELD));
     logonNode.put("HeartBtInt", logon.getInt(HeartBtInt.FIELD));
@@ -144,7 +144,7 @@ public class LogonCodec implements FixJsonCodec<Logon> {
         }
         logonNoMsgTypesNode.add(logonNoMsgTypesGroupNode);
       }
-      logonNode.put("NoMsgTypes", logonNoMsgTypesNode);
+      logonNode.set("NoMsgTypes", logonNoMsgTypesNode);
     }
     if (logon.isSetField(TestMessageIndicator.FIELD)) {
       logonNode.put("TestMessageIndicator", logon.getBoolean(TestMessageIndicator.FIELD));
@@ -172,8 +172,6 @@ public class LogonCodec implements FixJsonCodec<Logon> {
     Message.Header header = logon.getHeader();
     Message.Trailer trailer = logon.getTrailer();
     header.setField(new BeginString(logonNode.get("BeginString").asText()));
-    header.setField(new BodyLength(logonNode.get("BodyLength").asInt()));
-    header.setField(new MsgType(logonNode.get("MsgType").asText()));
     header.setField(new SenderCompID(logonNode.get("SenderCompID").asText()));
     header.setField(new TargetCompID(logonNode.get("TargetCompID").asText()));
     if (logonNode.has("OnBehalfOfCompID")) {
@@ -309,7 +307,6 @@ public class LogonCodec implements FixJsonCodec<Logon> {
     if (logonNode.has("Signature")) {
       trailer.setField(new Signature(logonNode.get("Signature").asText()));
     }
-    trailer.setField(new CheckSum(logonNode.get("CheckSum").asText()));
     return logon;
   }
 }

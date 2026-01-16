@@ -13,6 +13,7 @@ public class AdvertisementCodecTest {
     String json = FileUtils.readFileToString("json/Advertisement.json");
     AdvertisementCodec codec = new AdvertisementCodec();
     Advertisement decode = codec.decode(json);
+    decode.toString();
     String encode = codec.encode(decode);
     assertEquals(json, encode);
   }

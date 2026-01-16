@@ -2,8 +2,9 @@ package com.xinchentechnote.fix.codec;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import quickfix.FieldMap;
 import quickfix.Group;
 import quickfix.Message;
 import quickfix.field.*;
@@ -109,7 +110,7 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
         }
         advertisementNoHopsNode.add(advertisementNoHopsGroupNode);
       }
-      advertisementNode.put("NoHops", advertisementNoHopsNode);
+      advertisementNode.set("NoHops", advertisementNoHopsNode);
     }
     advertisementNode.put("AdvId", advertisement.getString(AdvId.FIELD));
     advertisementNode.put("AdvTransType", advertisement.getString(AdvTransType.FIELD));
@@ -117,14 +118,17 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
       advertisementNode.put("AdvRefID", advertisement.getString(AdvRefID.FIELD));
     }
     ObjectNode advertisementInstrumentNode = MAPPER.createObjectNode();
-    if (advertisement.isSetField(Symbol.FIELD)) {
-        advertisementInstrumentNode.put("Symbol", advertisement.getString(Symbol.FIELD));
+    FieldMap advertisementInstrument = advertisement;
+    if (advertisementInstrument.isSetField(Symbol.FIELD)) {
+      advertisementInstrumentNode.put("Symbol", advertisementInstrument.getString(Symbol.FIELD));
     }
-    if (advertisement.isSetField(SecurityID.FIELD)) {
-        advertisementInstrumentNode.put("SecurityID", advertisement.getString(SecurityID.FIELD));
+    if (advertisementInstrument.isSetField(SecurityID.FIELD)) {
+      advertisementInstrumentNode.put(
+          "SecurityID", advertisementInstrument.getString(SecurityID.FIELD));
     }
-    if (advertisement.isSetField(SecurityIDSource.FIELD)) {
-        advertisementInstrumentNode.put("SecurityIDSource", advertisement.getString(SecurityIDSource.FIELD));
+    if (advertisementInstrument.isSetField(SecurityIDSource.FIELD)) {
+      advertisementInstrumentNode.put(
+          "SecurityIDSource", advertisementInstrument.getString(SecurityIDSource.FIELD));
     }
     advertisementNode.set("Instrument", advertisementInstrumentNode);
     advertisementNode.put("AdvSide", advertisement.getString(AdvSide.FIELD));
@@ -184,8 +188,6 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
     Message.Header header = advertisement.getHeader();
     Message.Trailer trailer = advertisement.getTrailer();
     header.setField(new BeginString(advertisementNode.get("BeginString").asText()));
-    header.setField(new BodyLength(advertisementNode.get("BodyLength").asInt()));
-    header.setField(new MsgType(advertisementNode.get("MsgType").asText()));
     header.setField(new SenderCompID(advertisementNode.get("SenderCompID").asText()));
     header.setField(new TargetCompID(advertisementNode.get("TargetCompID").asText()));
     if (advertisementNode.has("OnBehalfOfCompID")) {
@@ -283,14 +285,17 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
     }
     if (advertisementNode.has("Instrument")) {
       ObjectNode advertisementInstrumentNode = (ObjectNode) advertisementNode.get("Instrument");
+      FieldMap advertisementInstrument = advertisement;
       if (advertisementInstrumentNode.has("Symbol")) {
-        advertisement.setField(new Symbol(advertisementInstrumentNode.get("Symbol").asText()));
+        advertisementInstrument.setField(
+            new Symbol(advertisementInstrumentNode.get("Symbol").asText()));
       }
       if (advertisementInstrumentNode.has("SecurityID")) {
-        advertisement.setField(new SecurityID(advertisementInstrumentNode.get("SecurityID").asText()));
+        advertisementInstrument.setField(
+            new SecurityID(advertisementInstrumentNode.get("SecurityID").asText()));
       }
       if (advertisementInstrumentNode.has("SecurityIDSource")) {
-        advertisement.setField(
+        advertisementInstrument.setField(
             new SecurityIDSource(advertisementInstrumentNode.get("SecurityIDSource").asText()));
       }
     }
@@ -341,7 +346,6 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
     if (advertisementNode.has("Signature")) {
       trailer.setField(new Signature(advertisementNode.get("Signature").asText()));
     }
-    trailer.setField(new CheckSum(advertisementNode.get("CheckSum").asText()));
     return advertisement;
   }
 }
