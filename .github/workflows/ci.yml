@@ -31,12 +31,8 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Check with Maven spotless
-      run: mvn spotless:check
-      
-    - name: Build fix-schema-tools with Maven
-      run: mvn -B clean package --file submodules/fix-schema-tools/pom.xml
-
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn spotless:check
+        | mvn -B clean install --file submodules/fix-schema-tools/pom.xml
+        | mvn -B package --file pom.xml
 
