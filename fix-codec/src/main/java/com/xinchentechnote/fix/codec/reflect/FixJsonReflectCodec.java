@@ -52,30 +52,89 @@ public class FixJsonReflectCodec implements FixJsonCodec<Message> {
     }
   }
 
-  private void encodeEntry(ObjectNode note, FieldMap message, FieldEntry entry)
+  private void encodeEntry(ObjectNode note, FieldMap message, FieldEntry fieldEntry)
       throws FieldNotFound {
-    if (entry.isRequired() || message.isSetField(entry.getDef().getNumber())) {
-      switch (entry.getDef().getType()) {
+    if (fieldEntry.isRequired() || message.isSetField(fieldEntry.getDef().getNumber())) {
+      switch (fieldEntry.getDef().getType()) {
         case BOOLEAN:
-          note.put(entry.getName(), message.getBoolean(entry.getDef().getNumber()) ? "Y" : "N");
+          note.put(
+              fieldEntry.getName(),
+              message.getBoolean(fieldEntry.getDef().getNumber()) ? "Y" : "N");
           break;
         case INT:
         case SEQNUM:
         case LENGTH:
-          note.put(entry.getName(), message.getInt(entry.getDef().getNumber()));
+          note.put(fieldEntry.getName(), message.getInt(fieldEntry.getDef().getNumber()));
           break;
         case FLOAT:
-          note.put(entry.getName(), message.getDouble(entry.getDef().getNumber()));
+          note.put(fieldEntry.getName(), message.getDouble(fieldEntry.getDef().getNumber()));
           break;
         default:
-          note.put(entry.getName(), message.getString(entry.getDef().getNumber()));
+          note.put(fieldEntry.getName(), message.getString(fieldEntry.getDef().getNumber()));
       }
     }
   }
 
-  private void encodeEntry(ObjectNode note, FieldMap message, ComponentEntry entry) {}
+  private void encodeEntry(ObjectNode note, FieldMap message, ComponentEntry componentEntry) {
+    componentEntry
+        .getDef()
+        .getEntries()
+        .forEach(
+            entry -> {
+              try {
+                if (entry instanceof FieldEntry) {
+                  encodeEntry(note, message, (FieldEntry) entry);
+                } else if (entry instanceof ComponentEntry) {
+                  encodeEntry(note, message, (ComponentEntry) entry);
+                } else if (entry instanceof GroupEntry) {
+                  encodeEntry(note, message, (GroupEntry) entry);
+                }
+              } catch (FieldNotFound e) {
+                throw new RuntimeException(e);
+              }
+            });
+  }
 
-  private void encodeEntry(ObjectNode note, FieldMap message, GroupEntry entry) {}
+  private void encodeEntry(ObjectNode note, FieldMap message, GroupEntry groupEntry)
+      throws FieldNotFound {
+
+    int numTag = groupEntry.getDef().getNumber();
+
+    if (!message.isSetField(numTag)) {
+      return;
+    }
+
+    int groupCount = message.getInt(numTag);
+    if (groupCount <= 0) {
+      return;
+    }
+
+    var arrayNode = MAPPER.createArrayNode();
+
+    for (int i = 1; i <= groupCount; i++) {
+      quickfix.Group group =
+          new quickfix.Group(
+              groupEntry.getDef().getNumber(), groupEntry.getDef().getDelimiterNumber());
+
+      message.getGroup(i, group);
+
+      ObjectNode groupNode = MAPPER.createObjectNode();
+
+      for (Entry entry : groupEntry.getDef().getEntries()) {
+        if (entry instanceof FieldEntry) {
+          encodeEntry(groupNode, group, (FieldEntry) entry);
+        } else if (entry instanceof ComponentEntry) {
+          encodeEntry(groupNode, group, (ComponentEntry) entry);
+        } else if (entry instanceof GroupEntry) {
+          encodeEntry(groupNode, group, (GroupEntry) entry);
+        }
+      }
+
+      arrayNode.add(groupNode);
+    }
+
+    note.set(groupEntry.getName(), arrayNode);
+  }
 
   @Override
   public Message decode(String jsonString) throws Exception {
@@ -104,22 +163,67 @@ public class FixJsonReflectCodec implements FixJsonCodec<Message> {
     }
   }
 
-  private void decodeEntry(JsonNode node, FieldMap message, FieldEntry entry) {
-    if (entry.isRequired() || node.has(entry.getName())) {
-      switch (entry.getDef().getType()) {
+  private void decodeEntry(JsonNode node, FieldMap message, FieldEntry fieldEntry) {
+    if (fieldEntry.isRequired() || node.has(fieldEntry.getName())) {
+      switch (fieldEntry.getDef().getType()) {
         case INT:
-          message.setInt(entry.getDef().getNumber(), node.get(entry.getName()).asInt());
+          message.setInt(fieldEntry.getDef().getNumber(), node.get(fieldEntry.getName()).asInt());
           break;
         case FLOAT:
-          message.setDouble(entry.getDef().getNumber(), node.get(entry.getName()).asDouble());
+          message.setDouble(
+              fieldEntry.getDef().getNumber(), node.get(fieldEntry.getName()).asDouble());
           break;
         default:
-          message.setString(entry.getDef().getNumber(), node.get(entry.getName()).asText());
+          message.setString(
+              fieldEntry.getDef().getNumber(), node.get(fieldEntry.getName()).asText());
       }
     }
   }
 
-  private void decodeEntry(JsonNode node, FieldMap message, ComponentEntry entry) {}
+  private void decodeEntry(JsonNode node, FieldMap message, ComponentEntry componentEntry) {
+    componentEntry
+        .getDef()
+        .getEntries()
+        .forEach(
+            entry -> {
+              if (entry instanceof FieldEntry) {
+                decodeEntry(node, message, (FieldEntry) entry);
+              } else if (entry instanceof ComponentEntry) {
+                decodeEntry(node, message, (ComponentEntry) entry);
+              } else if (entry instanceof GroupEntry) {
+                decodeEntry(node, message, (GroupEntry) entry);
+              }
+            });
+  }
 
-  private void decodeEntry(JsonNode node, FieldMap message, GroupEntry entry) {}
+  private void decodeEntry(JsonNode node, FieldMap message, GroupEntry groupEntry) {
+
+    JsonNode groupArray = node.get(groupEntry.getName());
+    if (groupArray == null || !groupArray.isArray()) {
+      return;
+    }
+
+    int count = groupArray.size();
+    message.setInt(groupEntry.getDef().getNumber(), count);
+
+    for (int i = 0; i < count; i++) {
+      JsonNode groupNode = groupArray.get(i);
+
+      quickfix.Group group =
+          new quickfix.Group(
+              groupEntry.getDef().getNumber(), groupEntry.getDef().getDelimiterNumber());
+
+      for (Entry entry : groupEntry.getDef().getEntries()) {
+        if (entry instanceof FieldEntry) {
+          decodeEntry(groupNode, group, (FieldEntry) entry);
+        } else if (entry instanceof ComponentEntry) {
+          decodeEntry(groupNode, group, (ComponentEntry) entry);
+        } else if (entry instanceof GroupEntry) {
+          decodeEntry(groupNode, group, (GroupEntry) entry);
+        }
+      }
+
+      message.addGroup(group);
+    }
+  }
 }
