@@ -11,6 +11,7 @@
     <module>client</module>
     <module>server</module>
     <module>fix-codec</module>
+      <module>fix-benchmark</module>
   </modules>
   <properties>
     <maven.compiler.source>11</maven.compiler.source>

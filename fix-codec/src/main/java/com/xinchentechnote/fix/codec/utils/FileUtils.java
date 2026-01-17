@@ -1,4 +1,4 @@
-package com.xinchentechnote.fix.utils;
+package com.xinchentechnote.fix.codec.utils;
 
 import com.google.common.io.CharStreams;
 import java.io.FileNotFoundException;
@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 public class FileUtils {
-  public static String readFileToString(String filePath) throws Exception {
+  public static String readFileToStringFromClassPath(String filePath) throws Exception {
     ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
     if (null == classLoader) {
       classLoader = FileUtils.class.getClassLoader();

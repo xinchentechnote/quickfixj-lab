@@ -2,7 +2,7 @@ package com.xinchentechnote.fix.codec;
 
 import static org.junit.Assert.*;
 
-import com.xinchentechnote.fix.utils.FileUtils;
+import com.xinchentechnote.fix.codec.utils.FileUtils;
 import java.time.LocalDateTime;
 import org.junit.Test;
 import quickfix.fix44.Logon;
@@ -12,7 +12,7 @@ public class LogonCodecTest {
   @Test
   public void testDecodeAndEncode1() throws Exception {
 
-    String json = FileUtils.readFileToString("json/Logon.simple.json");
+    String json = FileUtils.readFileToStringFromClassPath("json/Logon.simple.json");
     LogonCodec codec = new LogonCodec();
     Logon decode = codec.decode(json);
     decode.toString();
@@ -23,7 +23,7 @@ public class LogonCodecTest {
   @Test
   public void testDecodeAndEncode2() throws Exception {
 
-    String json = FileUtils.readFileToString("json/Logon.json");
+    String json = FileUtils.readFileToStringFromClassPath("json/Logon.json");
     LogonCodec codec = new LogonCodec();
     Logon decode = codec.decode(json);
     decode.toString();

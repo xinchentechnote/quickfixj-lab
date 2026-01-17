@@ -19,7 +19,7 @@
   "HeartBtInt" : 30,
   "RawDataLength" : 20,
   "RawData" : "VGhpcyBpcyByYXcgZGF0YQ==",
-  "ResetSeqNumFlag" : false,
+  "ResetSeqNumFlag" : "Y",
   "NextExpectedMsgSeqNum" : 0,
   "MaxMessageSize" : 4096,
   "NoMsgTypes" : [ {
@@ -29,7 +29,7 @@
     "RefMsgType" : "8",
     "MsgDirection" : "R"
   } ],
-  "TestMessageIndicator" : false,
+  "TestMessageIndicator" : "N",
   "Username" : "trading_user_001",
   "Password" : "encrypted_password_123",
   "CheckSum" : "000"

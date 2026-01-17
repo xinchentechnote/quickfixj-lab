@@ -62,10 +62,10 @@ public class LogonCodec implements FixJsonCodec<Logon> {
       logonNode.put("DeliverToLocationID", header.getString(DeliverToLocationID.FIELD));
     }
     if (header.isSetField(PossDupFlag.FIELD)) {
-      logonNode.put("PossDupFlag", header.getBoolean(PossDupFlag.FIELD));
+      logonNode.put("PossDupFlag", header.getBoolean(PossDupFlag.FIELD) ? "Y" : "N");
     }
     if (header.isSetField(PossResend.FIELD)) {
-      logonNode.put("PossResend", header.getBoolean(PossResend.FIELD));
+      logonNode.put("PossResend", header.getBoolean(PossResend.FIELD) ? "Y" : "N");
     }
     logonNode.put("SendingTime", header.getUtcTimeStamp(SendingTime.FIELD).toString());
     if (header.isSetField(OrigSendingTime.FIELD)) {
@@ -116,7 +116,7 @@ public class LogonCodec implements FixJsonCodec<Logon> {
       logonNode.put("RawData", logon.getString(RawData.FIELD));
     }
     if (logon.isSetField(ResetSeqNumFlag.FIELD)) {
-      logonNode.put("ResetSeqNumFlag", logon.getBoolean(ResetSeqNumFlag.FIELD));
+      logonNode.put("ResetSeqNumFlag", logon.getBoolean(ResetSeqNumFlag.FIELD) ? "Y" : "N");
     }
     if (logon.isSetField(NextExpectedMsgSeqNum.FIELD)) {
       logonNode.put("NextExpectedMsgSeqNum", logon.getInt(NextExpectedMsgSeqNum.FIELD));
@@ -147,7 +147,7 @@ public class LogonCodec implements FixJsonCodec<Logon> {
       logonNode.set("NoMsgTypes", logonNoMsgTypesNode);
     }
     if (logon.isSetField(TestMessageIndicator.FIELD)) {
-      logonNode.put("TestMessageIndicator", logon.getBoolean(TestMessageIndicator.FIELD));
+      logonNode.put("TestMessageIndicator", logon.getBoolean(TestMessageIndicator.FIELD) ? "Y" : "N");
     }
     if (logon.isSetField(Username.FIELD)) {
       logonNode.put("Username", logon.getString(Username.FIELD));
@@ -212,10 +212,10 @@ public class LogonCodec implements FixJsonCodec<Logon> {
       header.setField(new DeliverToLocationID(logonNode.get("DeliverToLocationID").asText()));
     }
     if (logonNode.has("PossDupFlag")) {
-      header.setField(new PossDupFlag(logonNode.get("PossDupFlag").asBoolean()));
+      header.setField(new PossDupFlag(logonNode.get("PossDupFlag").asText().equals("Y")));
     }
     if (logonNode.has("PossResend")) {
-      header.setField(new PossResend(logonNode.get("PossResend").asBoolean()));
+      header.setField(new PossResend(logonNode.get("PossResend").asText().equals("Y")));
     }
     header.setField(new SendingTime(newLocalDateTime(logonNode.get("SendingTime").asText())));
     if (logonNode.has("OrigSendingTime")) {
@@ -265,7 +265,7 @@ public class LogonCodec implements FixJsonCodec<Logon> {
       logon.setField(new RawData(logonNode.get("RawData").asText()));
     }
     if (logonNode.has("ResetSeqNumFlag")) {
-      logon.setField(new ResetSeqNumFlag(logonNode.get("ResetSeqNumFlag").asBoolean()));
+      logon.setField(new ResetSeqNumFlag(logonNode.get("ResetSeqNumFlag").asText().equals("Y")));
     }
     if (logonNode.has("NextExpectedMsgSeqNum")) {
       logon.setField(new NextExpectedMsgSeqNum(logonNode.get("NextExpectedMsgSeqNum").asInt()));
@@ -293,7 +293,7 @@ public class LogonCodec implements FixJsonCodec<Logon> {
       }
     }
     if (logonNode.has("TestMessageIndicator")) {
-      logon.setField(new TestMessageIndicator(logonNode.get("TestMessageIndicator").asBoolean()));
+      logon.setField(new TestMessageIndicator(logonNode.get("TestMessageIndicator").asText().equals("Y")));
     }
     if (logonNode.has("Username")) {
       logon.setField(new Username(logonNode.get("Username").asText()));
