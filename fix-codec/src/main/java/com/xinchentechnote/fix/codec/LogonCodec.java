@@ -147,7 +147,8 @@ public class LogonCodec implements FixJsonCodec<Logon> {
       logonNode.set("NoMsgTypes", logonNoMsgTypesNode);
     }
     if (logon.isSetField(TestMessageIndicator.FIELD)) {
-      logonNode.put("TestMessageIndicator", logon.getBoolean(TestMessageIndicator.FIELD) ? "Y" : "N");
+      logonNode.put(
+          "TestMessageIndicator", logon.getBoolean(TestMessageIndicator.FIELD) ? "Y" : "N");
     }
     if (logon.isSetField(Username.FIELD)) {
       logonNode.put("Username", logon.getString(Username.FIELD));
@@ -293,7 +294,8 @@ public class LogonCodec implements FixJsonCodec<Logon> {
       }
     }
     if (logonNode.has("TestMessageIndicator")) {
-      logon.setField(new TestMessageIndicator(logonNode.get("TestMessageIndicator").asText().equals("Y")));
+      logon.setField(
+          new TestMessageIndicator(logonNode.get("TestMessageIndicator").asText().equals("Y")));
     }
     if (logonNode.has("Username")) {
       logon.setField(new Username(logonNode.get("Username").asText()));

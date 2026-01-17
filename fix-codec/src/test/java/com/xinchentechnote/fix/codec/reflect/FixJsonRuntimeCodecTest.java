@@ -6,11 +6,12 @@ import com.xinchentechnote.fix.codec.utils.FileUtils;
 import org.junit.Test;
 import quickfix.fix44.Message;
 
-public class FixJsonReflectCodecTest {
+public class FixJsonRuntimeCodecTest {
 
   @Test
   public void encode() throws Exception {
-    FixJsonReflectCodec codec = new FixJsonReflectCodec("src/test/resources/fix/FIX44.xml");
+    String content = FileUtils.readFileToStringFromClassPath("fix/FIX44.xml");
+    FixJsonRuntimeCodec codec = new FixJsonRuntimeCodec(content);
     String json = FileUtils.readFileToStringFromClassPath("json/Logon.ref.json");
     Message decode = codec.decode(json);
     assertNotNull(decode);

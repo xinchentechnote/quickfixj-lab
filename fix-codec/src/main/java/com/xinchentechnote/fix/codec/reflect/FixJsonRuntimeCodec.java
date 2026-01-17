@@ -12,13 +12,13 @@ import quickfix.StringField;
 import quickfix.field.MsgType;
 import quickfix.fix44.Message;
 
-public class FixJsonReflectCodec implements FixJsonCodec<Message> {
+public class FixJsonRuntimeCodec implements FixJsonCodec<Message> {
 
   private FixSchema fixSchema;
   private static final ObjectMapper MAPPER = new ObjectMapper();
 
-  public FixJsonReflectCodec(String fixFilePath) throws Exception {
-    this.fixSchema = FixXmlDomParser.load(fixFilePath);
+  public FixJsonRuntimeCodec(String xmlContent) throws Exception {
+    this.fixSchema = FixXmlDomParser.loadXml(xmlContent);
   }
 
   @Override
