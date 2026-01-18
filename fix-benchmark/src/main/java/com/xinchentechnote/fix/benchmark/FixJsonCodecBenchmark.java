@@ -1,7 +1,7 @@
 package com.xinchentechnote.fix.benchmark;
 
 import com.xinchentechnote.fix.codec.LogonCodec;
-import com.xinchentechnote.fix.codec.reflect.FixJsonRuntimeCodec;
+import com.xinchentechnote.fix.codec.runtime.FixJsonRuntimeCodec;
 import com.xinchentechnote.fix.codec.utils.FileUtils;
 import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.annotations.*;
