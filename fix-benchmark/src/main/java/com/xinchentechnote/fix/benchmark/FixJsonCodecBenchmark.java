@@ -6,11 +6,12 @@ import com.xinchentechnote.fix.codec.utils.FileUtils;
 import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.annotations.*;
 import quickfix.fix44.Logon;
+import quickfix.fix44.Message;
 
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
-@Warmup(iterations = 5, time = 2)
-@Measurement(iterations = 5, time = 2)
+@Warmup(iterations = 5, time = 5)
+@Measurement(iterations = 5, time = 5)
 @Fork(2)
 @State(Scope.Thread)
 public class FixJsonCodecBenchmark {
@@ -32,8 +33,18 @@ public class FixJsonCodecBenchmark {
   }
 
   @Benchmark
-  public String encode_reflection(TestData data) throws Exception {
+  public String encode_runtime(TestData data) throws Exception {
     return fixJsonRuntimeCodec.encode(data.logon);
+  }
+
+  @Benchmark
+  public Message decode_generated(TestData data) throws Exception {
+    return logonCodec.decode(data.json);
+  }
+
+  @Benchmark
+  public Message decode_runtime(TestData data) throws Exception {
+    return fixJsonRuntimeCodec.decode(data.json);
   }
 
   @State(Scope.Thread)
