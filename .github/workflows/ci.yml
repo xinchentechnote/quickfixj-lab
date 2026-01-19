@@ -36,3 +36,5 @@ jobs:
         | mvn -B clean install --file submodules/fix-schema-tools/pom.xml
         | mvn -B package --file pom.xml
 
+    - name: Run benchmarks
+      run: java -jar fix-benchmark/target/fix-benchmark-1.0-SNAPSHOT.jar
