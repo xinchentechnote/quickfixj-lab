@@ -3,6 +3,7 @@ package com.xinchentechnote.fix.benchmark;
 import com.xinchentechnote.fix.codec.LogonCodec;
 import com.xinchentechnote.fix.codec.runtime.FixJsonRuntimeCodec;
 import com.xinchentechnote.fix.codec.utils.FileUtils;
+import com.xinchentechnote.fix.parser.v2.FixXmlDomParser;
 import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.annotations.*;
 import quickfix.fix44.Logon;
@@ -23,8 +24,9 @@ public class FixJsonCodecBenchmark {
   @Setup(Level.Trial)
   public void setup() throws Exception {
     logonCodec = new LogonCodec();
-    fixJsonRuntimeCodec =
-        new FixJsonRuntimeCodec(FileUtils.readFileToStringFromClassPath("FIX44.xml"));
+    FixXmlDomParser parser = new FixXmlDomParser();
+    String content = FileUtils.readFileToStringFromClassPath("FIX44.xml");
+    fixJsonRuntimeCodec = new FixJsonRuntimeCodec(parser.parseFromXml(content));
   }
 
   @Benchmark

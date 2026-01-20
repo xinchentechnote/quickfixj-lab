@@ -17,8 +17,8 @@ public class FixJsonRuntimeCodec implements FixJsonCodec<Message> {
   private FixSchema fixSchema;
   private static final ObjectMapper MAPPER = new ObjectMapper();
 
-  public FixJsonRuntimeCodec(String xmlContent) throws Exception {
-    this.fixSchema = FixXmlDomParser.loadXml(xmlContent);
+  public FixJsonRuntimeCodec(FixSchema fixSchema) {
+    this.fixSchema = fixSchema;
   }
 
   @Override

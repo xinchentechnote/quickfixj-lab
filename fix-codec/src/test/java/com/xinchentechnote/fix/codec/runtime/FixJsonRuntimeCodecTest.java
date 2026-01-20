@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import com.xinchentechnote.fix.codec.LogonCodec;
 import com.xinchentechnote.fix.codec.utils.FileUtils;
+import com.xinchentechnote.fix.parser.v2.FixXmlDomParser;
 import org.junit.Ignore;
 import org.junit.Test;
 import quickfix.fix44.Logon;
@@ -14,7 +15,8 @@ public class FixJsonRuntimeCodecTest {
   @Test
   public void encode() throws Exception {
     String content = FileUtils.readFileToStringFromClassPath("fix/FIX44.xml");
-    FixJsonRuntimeCodec codec = new FixJsonRuntimeCodec(content);
+    FixXmlDomParser parser = new FixXmlDomParser();
+    FixJsonRuntimeCodec codec = new FixJsonRuntimeCodec(parser.parseFromXml(content));
     String json = FileUtils.readFileToStringFromClassPath("json/Logon.ref.json");
     Message decode = codec.decode(json);
     assertNotNull(decode);
@@ -26,7 +28,8 @@ public class FixJsonRuntimeCodecTest {
   @Ignore
   public void decode() throws Exception {
     String content = FileUtils.readFileToStringFromClassPath("fix/FIX44.xml");
-    FixJsonRuntimeCodec codec = new FixJsonRuntimeCodec(content);
+    FixXmlDomParser parser = new FixXmlDomParser();
+    FixJsonRuntimeCodec codec = new FixJsonRuntimeCodec(parser.parseFromXml(content));
     String json = FileUtils.readFileToStringFromClassPath("json/Logon.ref.json");
     LogonCodec logonCodec = new LogonCodec();
     Message decode = codec.decode(json);
