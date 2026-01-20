@@ -11,12 +11,12 @@ import quickfix.field.*;
 import quickfix.fix44.*;
 import quickfix.fix44.component.*;
 
-public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
+public class AdvertisementCodec implements FixJsonCodec<JsonNode, Advertisement> {
 
   private static final ObjectMapper MAPPER = new ObjectMapper();
 
   @Override
-  public String encode(Advertisement advertisement) throws Exception {
+  public JsonNode encode(Advertisement advertisement) throws Exception {
     ObjectNode advertisementNode = MAPPER.createObjectNode();
     Message.Header header = advertisement.getHeader();
     Message.Trailer trailer = advertisement.getTrailer();
@@ -178,12 +178,11 @@ public class AdvertisementCodec implements FixJsonCodec<Advertisement> {
       advertisementNode.put("Signature", trailer.getString(Signature.FIELD));
     }
     advertisementNode.put("CheckSum", trailer.getString(CheckSum.FIELD));
-    return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(advertisementNode);
+    return advertisementNode;
   }
 
   @Override
-  public Advertisement decode(String jsonString) throws Exception {
-    JsonNode advertisementNode = MAPPER.readTree(jsonString);
+  public Advertisement decode(JsonNode advertisementNode) throws Exception {
     Advertisement advertisement = new Advertisement();
     Message.Header header = advertisement.getHeader();
     Message.Trailer trailer = advertisement.getTrailer();

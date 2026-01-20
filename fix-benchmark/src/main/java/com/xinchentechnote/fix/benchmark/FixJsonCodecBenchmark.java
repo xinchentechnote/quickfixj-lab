@@ -1,5 +1,7 @@
 package com.xinchentechnote.fix.benchmark;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xinchentechnote.fix.codec.LogonCodec;
 import com.xinchentechnote.fix.codec.runtime.FixJsonRuntimeCodec;
 import com.xinchentechnote.fix.codec.utils.FileUtils;
@@ -30,12 +32,12 @@ public class FixJsonCodecBenchmark {
   }
 
   @Benchmark
-  public String encode_generated(TestData data) throws Exception {
+  public JsonNode encode_generated(TestData data) throws Exception {
     return logonCodec.encode(data.logon);
   }
 
   @Benchmark
-  public String encode_runtime(TestData data) throws Exception {
+  public JsonNode encode_runtime(TestData data) throws Exception {
     return fixJsonRuntimeCodec.encode(data.logon);
   }
 
@@ -52,11 +54,12 @@ public class FixJsonCodecBenchmark {
   @State(Scope.Thread)
   public static class TestData {
     Logon logon;
-    String json;
+    JsonNode json;
 
     @Setup(Level.Trial)
     public void setup() throws Exception {
-      json = FileUtils.readFileToStringFromClassPath("Logon.json");
+      String content = FileUtils.readFileToStringFromClassPath("Logon.json");
+      json = new ObjectMapper().readTree(content);
       System.out.println("----------------------------");
       System.out.println(json);
       logon = new LogonCodec().decode(json);

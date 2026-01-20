@@ -10,12 +10,12 @@ import quickfix.field.*;
 import quickfix.fix44.*;
 import quickfix.fix44.component.*;
 
-public class LogonCodec implements FixJsonCodec<Logon> {
+public class LogonCodec implements FixJsonCodec<JsonNode, Logon> {
 
   private static final ObjectMapper MAPPER = new ObjectMapper();
 
   @Override
-  public String encode(Logon logon) throws Exception {
+  public JsonNode encode(Logon logon) throws Exception {
     ObjectNode logonNode = MAPPER.createObjectNode();
     Message.Header header = logon.getHeader();
     Message.Trailer trailer = logon.getTrailer();
@@ -163,12 +163,11 @@ public class LogonCodec implements FixJsonCodec<Logon> {
       logonNode.put("Signature", trailer.getString(Signature.FIELD));
     }
     logonNode.put("CheckSum", trailer.getString(CheckSum.FIELD));
-    return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(logonNode);
+    return logonNode;
   }
 
   @Override
-  public Logon decode(String jsonString) throws Exception {
-    JsonNode logonNode = MAPPER.readTree(jsonString);
+  public Logon decode(JsonNode logonNode) throws Exception {
     Logon logon = new Logon();
     Message.Header header = logon.getHeader();
     Message.Trailer trailer = logon.getTrailer();

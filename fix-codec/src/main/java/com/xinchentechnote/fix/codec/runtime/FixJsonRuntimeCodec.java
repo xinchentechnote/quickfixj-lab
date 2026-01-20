@@ -12,7 +12,7 @@ import quickfix.StringField;
 import quickfix.field.MsgType;
 import quickfix.fix44.Message;
 
-public class FixJsonRuntimeCodec implements FixJsonCodec<Message> {
+public class FixJsonRuntimeCodec implements FixJsonCodec<JsonNode, Message> {
 
   private FixSchema fixSchema;
   private static final ObjectMapper MAPPER = new ObjectMapper();
@@ -22,7 +22,7 @@ public class FixJsonRuntimeCodec implements FixJsonCodec<Message> {
   }
 
   @Override
-  public String encode(Message message) throws Exception {
+  public JsonNode encode(Message message) throws Exception {
     quickfix.Message.Header header = message.getHeader();
     quickfix.Message.Trailer trailer = message.getTrailer();
     StringField field = header.getField(new MsgType());
@@ -34,7 +34,7 @@ public class FixJsonRuntimeCodec implements FixJsonCodec<Message> {
     encodeMessage(root, message, messageDef);
     encodeMessage(root, trailer, trailerDef);
 
-    return MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(root);
+    return root;
   }
 
   private void encodeMessage(ObjectNode root, FieldMap message, MessageDef messageDef)
@@ -137,8 +137,7 @@ public class FixJsonRuntimeCodec implements FixJsonCodec<Message> {
   }
 
   @Override
-  public Message decode(String jsonString) throws Exception {
-    JsonNode root = MAPPER.readTree(jsonString);
+  public Message decode(JsonNode root) throws Exception {
     String msgType = root.get("MsgType").asText();
     MessageDef messageDef = fixSchema.getMessage(msgType);
     Message message = new Message();

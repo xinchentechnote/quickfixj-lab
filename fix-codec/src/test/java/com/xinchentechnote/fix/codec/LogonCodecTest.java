@@ -2,6 +2,8 @@ package com.xinchentechnote.fix.codec;
 
 import static org.junit.Assert.*;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xinchentechnote.fix.codec.utils.FileUtils;
 import java.time.LocalDateTime;
 import org.junit.Test;
@@ -14,10 +16,11 @@ public class LogonCodecTest {
 
     String json = FileUtils.readFileToStringFromClassPath("json/Logon.simple.json");
     LogonCodec codec = new LogonCodec();
-    Logon decode = codec.decode(json);
+    JsonNode logonNode = new ObjectMapper().readTree(json);
+    Logon decode = codec.decode(logonNode);
     decode.toString();
-    String encode = codec.encode(decode);
-    assertEquals(json, encode);
+    JsonNode encode = codec.encode(decode);
+    assertEquals(logonNode, encode);
   }
 
   @Test
@@ -25,10 +28,11 @@ public class LogonCodecTest {
 
     String json = FileUtils.readFileToStringFromClassPath("json/Logon.json");
     LogonCodec codec = new LogonCodec();
-    Logon decode = codec.decode(json);
+    JsonNode logonNode = new ObjectMapper().readTree(json);
+    Logon decode = codec.decode(logonNode);
     decode.toString();
-    String encode = codec.encode(decode);
-    assertEquals(json, encode);
+    JsonNode encode = codec.encode(decode);
+    assertEquals(logonNode, encode);
   }
 
   @Test
@@ -48,7 +52,7 @@ public class LogonCodecTest {
     logon.getTrailer().setString(10, "1");
 
     LogonCodec codec = new LogonCodec();
-    String json = codec.encode(logon);
+    JsonNode json = codec.encode(logon);
     Logon decoded = codec.decode(json);
 
     assertEquals("FIX.4.4", decoded.getHeader().getString(8));

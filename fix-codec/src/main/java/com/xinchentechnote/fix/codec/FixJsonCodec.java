@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import quickfix.Message;
 
-public interface FixJsonCodec<T extends Message> {
+public interface FixJsonCodec<K, T extends Message> {
   default LocalDateTime newLocalDateTime(String dateTimeString) {
     return LocalDateTime.parse(dateTimeString);
   }
@@ -18,7 +18,7 @@ public interface FixJsonCodec<T extends Message> {
     return LocalTime.parse(timeString);
   }
 
-  String encode(T message) throws Exception;
+  K encode(T message) throws Exception;
 
-  T decode(String jsonString) throws Exception;
+  T decode(K json) throws Exception;
 }
