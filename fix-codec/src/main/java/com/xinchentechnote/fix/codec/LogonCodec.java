@@ -67,7 +67,7 @@ public class LogonCodec implements FixJsonCodec<JsonNode, Logon> {
     if (header.isSetField(PossResend.FIELD)) {
       logonNode.put("PossResend", header.getBoolean(PossResend.FIELD) ? "Y" : "N");
     }
-    logonNode.put("SendingTime", header.getUtcTimeStamp(SendingTime.FIELD).toString());
+    logonNode.put("SendingTime", toFixTimestamp(header.getUtcTimeStamp(SendingTime.FIELD)));
     if (header.isSetField(OrigSendingTime.FIELD)) {
       logonNode.put("OrigSendingTime", header.getUtcTimeStamp(OrigSendingTime.FIELD).toString());
     }
@@ -98,7 +98,8 @@ public class LogonCodec implements FixJsonCodec<JsonNode, Logon> {
         }
         if (logonNoHopsGroup.isSetField(HopSendingTime.FIELD)) {
           logonNoHopsGroupNode.put(
-              "HopSendingTime", logonNoHopsGroup.getUtcTimeStamp(HopSendingTime.FIELD).toString());
+              "HopSendingTime",
+              toFixTimestamp(logonNoHopsGroup.getUtcTimeStamp(HopSendingTime.FIELD)));
         }
         if (logonNoHopsGroup.isSetField(HopRefID.FIELD)) {
           logonNoHopsGroupNode.put("HopRefID", logonNoHopsGroup.getInt(HopRefID.FIELD));

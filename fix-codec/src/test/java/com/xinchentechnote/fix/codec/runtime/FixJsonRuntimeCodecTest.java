@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xinchentechnote.fix.codec.LogonCodec;
 import com.xinchentechnote.fix.codec.utils.FileUtils;
 import com.xinchentechnote.fix.parser.v2.FixXmlDomParser;
-import org.junit.Ignore;
 import org.junit.Test;
 import quickfix.fix44.Logon;
 import quickfix.fix44.Message;
@@ -29,7 +28,6 @@ public class FixJsonRuntimeCodecTest {
   }
 
   @Test
-  @Ignore
   public void decode() throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
     String content = FileUtils.readFileToStringFromClassPath("fix/FIX44.xml");

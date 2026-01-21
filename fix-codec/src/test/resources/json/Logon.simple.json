@@ -5,7 +5,7 @@
   "SenderCompID" : "CLIENT",
   "TargetCompID" : "SERVER",
   "MsgSeqNum" : 1,
-  "SendingTime" : "2025-12-31T16:03:33",
+  "SendingTime" : "20251231-16:03:33.000",
   "EncryptMethod" : 0,
   "HeartBtInt" : 30,
   "CheckSum" : "000"
