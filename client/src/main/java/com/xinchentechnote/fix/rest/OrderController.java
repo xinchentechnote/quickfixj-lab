@@ -1,0 +1,15 @@
+package com.xinchentechnote.fix.rest;
+
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+
+@Path("/order")
+public class OrderController {
+  @GET
+  @Produces(MediaType.TEXT_PLAIN)
+  public String hello() {
+    return "Hello RESTEasy";
+  }
+}
