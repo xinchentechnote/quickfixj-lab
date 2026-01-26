@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xinchentechnote.fix.codec.LogonCodec;
 import com.xinchentechnote.fix.codec.runtime.FixJsonRuntimeCodec;
 import com.xinchentechnote.fix.codec.utils.FileUtils;
-import com.xinchentechnote.fix.parser.v2.FixXmlDomParser;
+import com.xinchentechnote.fix.parser.FixXmlDomParser;
 import java.util.concurrent.TimeUnit;
 import org.openjdk.jmh.annotations.*;
 import quickfix.fix44.Logon;

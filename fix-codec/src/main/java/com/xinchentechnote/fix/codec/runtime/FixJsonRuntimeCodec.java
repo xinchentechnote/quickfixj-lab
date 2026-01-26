@@ -4,7 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.xinchentechnote.fix.codec.FixJsonCodec;
-import com.xinchentechnote.fix.parser.v2.*;
+import com.xinchentechnote.fix.parser.*;
+
 import java.util.List;
 import quickfix.FieldMap;
 import quickfix.FieldNotFound;
