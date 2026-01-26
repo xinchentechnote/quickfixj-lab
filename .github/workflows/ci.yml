@@ -33,7 +33,7 @@ jobs:
 
     - name: Build with Maven
       run: mvn spotless:check
-        | mvn -B clean install --file submodules/fix-schema-tools/pom.xml
+        | mvn -B clean install --file submodules/fix-parser/pom.xml
         | mvn -B package --file pom.xml
 
     - name: Run benchmarks
