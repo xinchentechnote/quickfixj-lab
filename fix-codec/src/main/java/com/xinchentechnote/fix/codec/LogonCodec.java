@@ -69,7 +69,8 @@ public class LogonCodec implements FixJsonCodec<JsonNode, Logon> {
     }
     logonNode.put("SendingTime", toFixTimestamp(header.getUtcTimeStamp(SendingTime.FIELD)));
     if (header.isSetField(OrigSendingTime.FIELD)) {
-      logonNode.put("OrigSendingTime", header.getUtcTimeStamp(OrigSendingTime.FIELD).toString());
+      logonNode.put(
+          "OrigSendingTime", toFixTimestamp(header.getUtcTimeStamp(OrigSendingTime.FIELD)));
     }
     if (header.isSetField(XmlDataLen.FIELD)) {
       logonNode.put("XmlDataLen", header.getInt(XmlDataLen.FIELD));
