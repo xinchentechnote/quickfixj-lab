@@ -35,7 +35,7 @@
       </dependency>
       <dependency>
           <groupId>com.xinchentechnote.fix</groupId>
-          <artifactId>fix-schema-tools</artifactId>
+          <artifactId>fix-parser</artifactId>
           <version>1.0-SNAPSHOT</version>
       </dependency>
   </dependencies>
