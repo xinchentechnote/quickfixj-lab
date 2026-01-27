@@ -17,12 +17,17 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: recursive
 
       - uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: '17'
           cache: maven
+
+      - name: Build parser with Maven
+        run: mvn -B clean install --file submodules/fix-parser/pom.xml
 
       - run: mvn clean package -DskipTests
 
@@ -37,12 +42,16 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v3
-
+        with:
+          submodules: recursive
       - uses: actions/setup-java@v3
         with:
           distribution: temurin
           java-version: '17'
           cache: maven
+
+      - name: Build parser with Maven
+        run: mvn -B clean install --file submodules/fix-parser/pom.xml
 
       - run: mvn clean package -DskipTests
 
