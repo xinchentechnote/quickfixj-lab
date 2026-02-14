@@ -34,9 +34,9 @@
           <version>33.0.0-jre</version>
       </dependency>
       <dependency>
-          <groupId>com.xinchentechnote.fix</groupId>
+          <groupId>io.github.xinchentechnote</groupId>
           <artifactId>fix-parser</artifactId>
-          <version>1.0-SNAPSHOT</version>
+          <version>0.1.0</version>
       </dependency>
   </dependencies>
 </project>
